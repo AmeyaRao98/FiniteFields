@@ -1,20 +1,14 @@
 import java.util.*;
 
 public class Polynomial {
-	ArrayList<Integer> coefficients = new ArrayList<Integer>();
+	ArrayList<IntegerMod> coefficients = new ArrayList<IntegerMod>();
 	int mod;
 
 	Polynomial(int[] coef, int m) {
-
 		mod = m;
 		if(coef != null){
 			for (int i = 0; i < coef.length; i++) {
-				if (coef[i] < 0) {
-					coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double)mod)));
-				} else {
-					coef[i] = coef[i] % mod;
-				}
-				coefficients.add(coef[i]);
+				coefficients.add(new IntegerMod(coef[i], mod));
 			}
 		}
 	}
@@ -23,40 +17,21 @@ public class Polynomial {
 		return mod;
 	}
 
-	ArrayList<Integer> getCoefficients() {
+	ArrayList<IntegerMod> getCoefficients() {
 		return coefficients;
 	}
 
-	int get1Coefficient(int index) {
-		return coefficients.get(index);
-	}
-
 	void add1Coefficient(int element) {
-		if (element < 0) {
-			element = element + mod * (int)(Math.abs(Math.floor( (double) element / (double) mod )));
-		} else {
-			element = element % mod;
-		}
-		coefficients.add(element);
+		coefficients.add(new IntegerMod(element, mod));
 	}
 
 	void set1Coefficient(int index,int element) {
-		if (element < 0) {
-			element = element + mod * (int)(Math.abs(Math.floor( (double) element / (double) mod )));
-		} else {
-			element = element % mod;
-		}
-		coefficients.set(index, element);
+		coefficients.set(index, this.set(element));
 	}
 
 	void setCoefficients(int[] coef) {
 		for (int i = 0; i < coef.length; i++) {
-			if (coef[i] < 0) {
-				coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double)mod)));
-			} else {
-				coef[i] = coef[i] % mod;
-			}
-			coefficients.add(coef[i]);
+			coefficients.set(i, this.set(coef[i]));
 		}
 	}
 
