@@ -10,12 +10,21 @@ public class Finite {
 		int maxsize = Math.max(x.coefficients.size(), y.coefficients.size());
 		int xdiff = maxsize - x.coefficients.size();
 		int ydiff = maxsize - y.coefficients.size();
+<<<<<<< HEAD
 		for(int i = 0; i < maxsize; i++){
 			if(x.coefficients.size() - y.coefficients.size() > i){
 				z.add1Coefficient( x.getCoefficient(i));
 			}
 			else if(y.coefficients.size() - x.coefficients.size()>i){
 				z.add1Coefficient( y.getCoefficient( i));
+=======
+		for(int i=0;i<maxsize;i++){
+			if(x.coefficients.size()-y.coefficients.size()>i){
+				z.add1Coefficient(x.coefficients.get(i).number);
+			}
+			else if(y.coefficients.size()-x.coefficients.size()>i){
+				z.add1Coefficient(y.coefficients.get(i).number);
+>>>>>>> 1cdc053617d0cc54385cb7aaa1a73f43230dc0c3
 			}
 			else{
 				z.add1Coefficient( x.getCoefficient( i - xdiff) + y.getCoefficient( i - ydiff));
@@ -31,7 +40,7 @@ public class Finite {
 
 			x.set1Coefficient(i, x.getCoefficient(i) * z);
 		}
-		x.displayPoly();
+		//x.displayPoly();
 		return x;
 	}
 	
@@ -40,12 +49,21 @@ public class Finite {
 		int maxsize = Math.max(x.coefficients.size(), y.coefficients.size());
 		int xdiff = maxsize - x.coefficients.size();
 		int ydiff = maxsize - y.coefficients.size();
+<<<<<<< HEAD
 		for(int i = 0; i < maxsize; i++){
 			if( x.coefficients.size() - y.coefficients.size() > i){
 				z.add1Coefficient( x.getCoefficient( i));
 			}
 			else if( y.coefficients.size() - x.coefficients.size() > i){
 				z.add1Coefficient( -y.getCoefficient( i));
+=======
+		for(int i=0;i<maxsize;i++){
+			if(x.coefficients.size()-y.coefficients.size()>i){
+				z.add1Coefficient(x.coefficients.get(i).number);
+			}
+			else if(y.coefficients.size()-x.coefficients.size()>i){
+				z.add1Coefficient(-y.coefficients.get(i).number);
+>>>>>>> 1cdc053617d0cc54385cb7aaa1a73f43230dc0c3
 			}
 			else{
 				z.add1Coefficient( x.getCoefficient( i - xdiff) - y.getCoefficient( i - ydiff));
@@ -84,7 +102,11 @@ public class Finite {
 		int y[] = { 4, 3, 2};
 		Polynomial xx = new Polynomial(x, 8);
 		Polynomial yy = new Polynomial(y, 8);
+<<<<<<< HEAD
 		new Finite().product(xx, yy);
+=======
+		new Finite().sum(xx, yy);
+>>>>>>> 1cdc053617d0cc54385cb7aaa1a73f43230dc0c3
 
 	}
 }
