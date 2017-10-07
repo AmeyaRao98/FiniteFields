@@ -8,26 +8,20 @@ public class Finite {
 		int maxsize = Math.max(x.coefficients.size(), y.coefficients.size());
 		for(int i=0;i<maxsize;i++){
 			if(i>x.coefficients.size()-1){
-				z.add1Coefficient(y.coefficients.get(i));
+				z.add1Coefficient(y.coefficients.get(i).number);
 			}
 			else if(i>y.coefficients.size()-1){
-				z.add1Coefficient(x.coefficients.get(i));
+				z.add1Coefficient(x.coefficients.get(i).number);
 			}
 			else{
-				z.add1Coefficient(x.coefficients.get(i) + y.coefficients.get(i));
+				z.add1Coefficient(x.coefficients.get(i).number + y.coefficients.get(i).number);
 			}
 		}
-		z.displayPoly();
 		return z;
 
 	}
-	
+
 	public static void main(String[] args) {
-		int x[] = {1};
-		int y[] = {1,0};
-		Polynomial xx = new Polynomial(x, 3);
-		Polynomial yy = new Polynomial(y, 3);
-		new Finite().sum(xx,yy);
-		
+
 	}
 }
