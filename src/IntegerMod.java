@@ -4,7 +4,7 @@ public class IntegerMod {
 	
 	IntegerMod(int value, int m) {
 		mod = m;
-		number = value;
+		set(value);
 	}
 	
 	void set(int value) {
