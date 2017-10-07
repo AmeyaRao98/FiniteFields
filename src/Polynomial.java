@@ -59,4 +59,12 @@ public class Polynomial {
 			coefficients.add(coef[i]);
 		}
 	}
+
+	void displayPoly(){
+		System.out.println("X^"+ (coefficients.size()));
+		for(int i=1; i<coefficients.size();i++){
+			System.out.println(" + X^"+ (coefficients.size()-i));
+		}
+		
+	}
 }

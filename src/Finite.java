@@ -6,7 +6,7 @@ public class Finite {
 	Polynomial sum(Polynomial x, Polynomial y){
 		Polynomial z = new Polynomial(null, x.getMod());//we assume that x,y and z(by extention) have the same mod
 		int maxsize = Math.max(x.coefficients.size(), y.coefficients.size());
-		for(int i=maxsize-1;i>=0;i--){
+		for(int i=0;i<=maxsize;i--){
 			if(i>x.coefficients.size()){
 				z.add1Coefficient(y.coefficients.get(i));
 			}
@@ -20,6 +20,7 @@ public class Finite {
 		return z;
 
 	}
+	
 	public static void main(String[] args) {
 	}
 }
