@@ -15,20 +15,29 @@ public class Polynomial {
 		}
 	}
 
-	int getMod() {
-		return mod;
-	}
-	
 	int size() {
 		int size = coefficients.size();
 		return size;
 	}
 	int degree(){
-		return coefficients.size()-1;
+		for(int i = 1; i < size(); i++) {
+			if(getCoefficient(i - 1) != 0) {
+				return coefficients.size() - i;
+			}
+		}
+		return 0;
 	}
-	
+
 	int getCoefficient(int index) {
 		return coefficients.get(index).number;
+	}
+	int leadingCoef(){
+		for(int i = 0; i < size(); i++) {
+			if(getCoefficient(i) != 0) {
+				return getCoefficient(i);
+			}
+		}
+		return 0;
 	}
 
 	ArrayList<IntegerMod> getCoefficients() {
@@ -50,19 +59,28 @@ public class Polynomial {
 	}
 
 	void displayPoly(){
+
+
 		String coef="";
 		String result="";
-		for(int i=0; i<coefficients.size();i++){
-			coef="";
-			if(coefficients.get(i).number!=0){
-				if(coefficients.get(i).number!=1){
-					coef = Integer.toString(coefficients.get(i).number);
-				}
-				result+= ("+ " +coef + xdisp(coefficients.size()-i-1,coefficients.get(i).number)+" ");
-			}
+		if(coefficients.size() < 1 || leadingCoef() == 0){
+			result = "0";
 		}
-		if(result.charAt(0)=='+'){
-			result = result.substring(2);
+		else{
+			for(int i=0; i<coefficients.size();i++){
+				coef="";
+				if(coefficients.get(i).number!=0){
+					if(coefficients.get(i).number!=1){
+						coef = Integer.toString(coefficients.get(i).number);
+					}
+					result+= ("+ " +coef + xdisp(coefficients.size()-i-1,coefficients.get(i).number)+" ");
+				}
+				if(!result.equals("")){
+					if(result.charAt(0)=='+'){
+						result = result.substring(2);
+					}
+				}
+			}
 		}
 		System.out.println(result);
 	}

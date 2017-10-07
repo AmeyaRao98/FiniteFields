@@ -5,7 +5,7 @@ import java.util.*;
 public class Finite {
 
 	Polynomial sum(Polynomial x, Polynomial y){
-		Polynomial z = new Polynomial(null, x.getMod());//we assume that x,y and z(by extension) have the same mod
+		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
 
 		int max = Math.max(x.size(), y.size());
 		int xdiff = max - x.size();
@@ -28,17 +28,18 @@ public class Finite {
 
 	}
 
-	Polynomial scalarmul(Polynomial x, int z){
+	Polynomial scalarmul(Polynomial x, int a){
+		Polynomial z = new Polynomial(null, x.mod);
 		for(int i = 0; i < x.size(); i++){//loop through the list of coefficients
 
-			x.set1Coefficient(i, x.getCoefficient(i) * z);//replace the element by its product with the scalar
+			z.add1Coefficient(x.getCoefficient(i) * a);//adds the scalar multiple to the new array
 		}
-		//x.displayPoly();
-		return x;
+		//z.displayPoly();
+		return z;
 	}
 
 	Polynomial sub(Polynomial x, Polynomial y){
-		Polynomial z = new Polynomial(null, x.getMod());//we assume that x,y and z(by extension) have the same mod
+		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
 
 		int max = Math.max(x.size(), y.size());
 		int xdiff = max - x.size();
@@ -62,7 +63,7 @@ public class Finite {
 	}
 
 	Polynomial product(Polynomial x, Polynomial y) {
-		Polynomial z = new Polynomial(null, x.getMod());//we assume that x,y and z(by extension) have the same mod
+		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
 
 		for (int i = 0; i < x.size() + y.size() - 1; i++) {
 			z.add1Coefficient(0);
@@ -73,29 +74,54 @@ public class Finite {
 				z.set1Coefficient(i + j, z.getCoefficient( i + j)+ (x.getCoefficient( i) * y.getCoefficient( j)));
 			}
 		}
-		z.displayPoly();
+		//z.displayPoly();
 		return z;
 	}
 
-	Division division(Polynomial x, Polynomial y) {
-		Division d = new Division(new Polynomial(null, x.getMod()), x);//This objects contains the quotient and remainder and will be returned at the end
-		int lc=0;//stores lc(r)/lc(b)
-		while(d.remainder.degree()>=y.degree()){
-			d.quotient = d.quotient;
+	Division division(Polynomial x, Polynomial y) {//Algorithm 1.2.6 [Long Division]
+		Division d = new Division(new Polynomial(null, x.mod), x);//This objects contains the quotient and remainder and will be returned at the end
+
+		int lc=0;//stores lc(d.remainder)/lc(y)
+		Polynomial xx = new Polynomial(null,x.mod);//stores x^(deg(d.remainder)-deg(y)
+
+		//while(d.remainder.degree() >= y.degree()){
+		for(int i = 0; i <= (x.degree() - y.degree()) + 1; i++){
+			lc = findDiv(d.remainder.leadingCoef(), y.getCoefficient(0), x.mod);
+			xx = xpow(d.remainder.degree() - y.degree(),x.mod);
+			
+			d.quotient = sum(d.quotient, scalarmul(xx,lc));
+			d.remainder = sub(d.remainder, scalarmul(product(xx,y),lc));
 
 		}
-
-
-
+		//d.quotient.displayPoly();
+		//d.remainder.displayPoly();
 		return d;
 	}
 
+	Polynomial xpow(int pow,int mod){
+		Polynomial z = new Polynomial(null, mod);
+		z.add1Coefficient(1);
+		for(int i = 0; i < pow; i++){
+			z.add1Coefficient(0);
+		}
+		return z;
+	}
+	
+	int findDiv(int r,int b,int m){
+		int i=0;
+		for( i=1 ; i<=m ; i++){
+			if(( b * i) % m == r){
+				return i;
+			}
+		}
+		return 0;
+	}
+
 	public static void main(String[] args) {
-		int x[] = { 5, 2, 3};
-		int y[] = { 4, 3, 2};
-		Polynomial xx = new Polynomial(x, 8);
-		Polynomial yy = new Polynomial(y, 8);
-		new Finite().product(xx, yy);
-		new Finite().sum(xx, yy);
+		int x[] = { 3, 4, 3};
+		int y[] = { 4, 5};
+		Polynomial xx = new Polynomial(x, 5);
+		Polynomial yy = new Polynomial(y, 5);
+		new Finite().division(xx, yy);
 	}
 }
