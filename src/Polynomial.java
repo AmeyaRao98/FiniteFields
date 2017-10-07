@@ -9,7 +9,7 @@ public class Polynomial {
 		
 		for (int i = 0; i < coef.length; i++) {
 			if (coef[i] < 0) {
-				coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double))mod)));
+				coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double)mod)));
 			} else {
 				coef[i] = coef[i] % mod;
 			}
@@ -26,7 +26,7 @@ public class Polynomial {
 	}
 	
 	int get1Coefficient(int index) {
-		coefficients.get(index);
+		return coefficients.get(index);
 	}
 	
 	void add1Coefficient(int element) {
@@ -50,7 +50,7 @@ public class Polynomial {
 	void setCoefficients(int[] coef) {
 		for (int i = 0; i < coef.length; i++) {
 			if (coef[i] < 0) {
-				coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double))mod)));
+				coef[i] = coef[i] + mod*(int)(Math.abs(Math.floor((double)coef[i] / (double)mod)));
 			} else {
 				coef[i] = coef[i] % mod;
 			}
