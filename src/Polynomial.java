@@ -36,10 +36,21 @@ public class Polynomial {
 	}
 
 	void displayPoly(){
-		System.out.println("X^"+ (coefficients.size()));
+		String coef="";
+		if(coefficients.get(0).number!=0){
+			if(coefficients.get(0).number!=1){
+				coef = Integer.toString(coefficients.get(0).number);
+			}
+			System.out.print(coef + "X^"+ (coefficients.size()));}
+
 		for(int i=1; i<coefficients.size();i++){
-			System.out.println(" + X^"+ (coefficients.size()-i));
+			coef="";
+			if(coefficients.get(i).number!=0){
+				if(coefficients.get(i).number!=1){
+					coef = Integer.toString(coefficients.get(i).number);
+				}
+				System.out.print(" + X^"+ (coefficients.size()-i));
+			}
 		}
-		
 	}
 }
