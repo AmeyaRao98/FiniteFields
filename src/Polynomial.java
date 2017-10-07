@@ -18,6 +18,10 @@ public class Polynomial {
 	int getMod() {
 		return mod;
 	}
+	
+	int getCoefficient(int index) {
+		return coefficients.get(index).number;
+	}
 
 	ArrayList<IntegerMod> getCoefficients() {
 		return coefficients;
