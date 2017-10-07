@@ -97,6 +97,8 @@ public class Finite {
 		//d.remainder.displayPoly();
 		return d;
 	}
+	
+	
 
 	Polynomial xpow(int pow,int mod){
 		Polynomial z = new Polynomial(null, mod);
