@@ -26,12 +26,12 @@ public class Polynomial {
 	}
 
 	void set1Coefficient(int index,int element) {
-		coefficients.set(index, this.set(element));
+		coefficients.get(index).set(element);
 	}
 
 	void setCoefficients(int[] coef) {
 		for (int i = 0; i < coef.length; i++) {
-			coefficients.set(i, this.set(coef[i]));
+			coefficients.get(i).set(coef[i]);
 		}
 	}
 
