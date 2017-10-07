@@ -1,6 +1,6 @@
 import java.util.*;
 
-//Degree 0 corresponds to index 0 of the polynomial of the ArrayList
+//Degree 0 corresponds to the highest power of the polynomial in the arraylist
 
 public class Polynomial {
 	ArrayList<IntegerMod> coefficients = new ArrayList<IntegerMod>();
@@ -46,7 +46,7 @@ public class Polynomial {
 				if(coefficients.get(i).number!=1){
 					coef = Integer.toString(coefficients.get(i).number);
 				}
-				result+= ("+ " +coef + xdisp(coefficients.size()-i-1)+" ");
+				result+= ("+ " +coef + xdisp(coefficients.size()-i-1,coefficients.get(i).number)+" ");
 			}
 		}
 		if(result.charAt(0)=='+'){
@@ -54,8 +54,11 @@ public class Polynomial {
 		}
 		System.out.println(result);
 	}
-	String xdisp(int x){
+	String xdisp(int x,int i){
 		if(x==0){
+			if(i==1){
+				return "1";
+			}
 			return "";
 		}
 		if(x==1){
@@ -64,6 +67,6 @@ public class Polynomial {
 		else{
 			return ("X^" +x);
 		}
-		
+
 	}
 }
