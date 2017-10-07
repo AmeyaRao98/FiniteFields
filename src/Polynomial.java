@@ -19,6 +19,14 @@ public class Polynomial {
 		return mod;
 	}
 	
+	int size() {
+		int size = coefficients.size();
+		return size;
+	}
+	int degree(){
+		return coefficients.size()-1;
+	}
+	
 	int getCoefficient(int index) {
 		return coefficients.get(index).number;
 	}
