@@ -84,8 +84,7 @@ public class Finite {
 		int lc=0;//stores lc(d.remainder)/lc(y)
 		Polynomial xx = new Polynomial(null,x.mod);//stores x^(deg(d.remainder)-deg(y)
 
-		//while(d.remainder.degree() >= y.degree()){
-		for(int i = 0; i <= (x.degree() - y.degree()) + 1; i++){
+		while(d.remainder.degree() >= y.degree()){
 			lc = findDiv(d.remainder.leadingCoef(), y.getCoefficient(0), x.mod);
 			xx = xpow(d.remainder.degree() - y.degree(),x.mod);
 			
@@ -97,7 +96,6 @@ public class Finite {
 		//d.remainder.displayPoly();
 		return d;
 	}
-	
 	
 
 	Polynomial xpow(int pow,int mod){
@@ -120,8 +118,8 @@ public class Finite {
 	}
 
 	public static void main(String[] args) {
-		int x[] = { 3, 4, 3};
-		int y[] = { 4, 5};
+		int x[] = {3 ,4, 3, 4};
+		int y[] = {3, 4, 0, 3};
 		Polynomial xx = new Polynomial(x, 5);
 		Polynomial yy = new Polynomial(y, 5);
 		new Finite().division(xx, yy);
