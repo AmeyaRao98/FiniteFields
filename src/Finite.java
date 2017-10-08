@@ -80,14 +80,13 @@ public class Finite {
 
 	Division division(Polynomial x, Polynomial y) {//Algorithm 1.2.6 [Long Division]
 		Division d = new Division(new Polynomial(null, x.mod), x);//This objects contains the quotient and remainder and will be returned at the end
-
 		int lc=0;//stores lc(d.remainder)/lc(y)
 		Polynomial xx = new Polynomial(null,x.mod);//stores x^(deg(d.remainder)-deg(y)
 
 		while(d.remainder.degree() >= y.degree()){
-			lc = findDiv(d.remainder.leadingCoef(), y.getCoefficient(0), x.mod);
+			lc = findDiv(d.remainder.leadingCoef(), y.leadingCoef(), x.mod);
 			xx = xpow(d.remainder.degree() - y.degree(),x.mod);
-			
+
 			d.quotient = sum(d.quotient, scalarmul(xx,lc));
 			d.remainder = sub(d.remainder, scalarmul(product(xx,y),lc));
 
@@ -96,7 +95,23 @@ public class Finite {
 		//d.remainder.displayPoly();
 		return d;
 	}
-	
+
+	Euclid exteuclid(Polynomial x, Polynomial y){// Algorithm 1.2.10 + 1.2.11
+		Euclid e = new Euclid(new Polynomial(null, x.mod), new Polynomial(null, x.mod), new Polynomial(null, x.mod));
+		Polynomial r = new Polynomial(null,x.mod);//q
+
+		while(y.leadingCoef()!=0){//finding the gcd: 1.2.10
+			r = division(x,y).remainder;
+			x = y;
+			y = r;
+		}
+
+		e.gcd = x;
+		e.gcd.displayPoly();
+		//e.x.displayPoly();
+		//e.y.displayPoly();
+		return e;
+	}
 
 	Polynomial xpow(int pow,int mod){
 		Polynomial z = new Polynomial(null, mod);
@@ -106,7 +121,7 @@ public class Finite {
 		}
 		return z;
 	}
-	
+
 	int findDiv(int r,int b,int m){
 		int i=0;
 		for( i=1 ; i<=m ; i++){
@@ -122,6 +137,6 @@ public class Finite {
 		int y[] = {3, 4, 0, 3};
 		Polynomial xx = new Polynomial(x, 5);
 		Polynomial yy = new Polynomial(y, 5);
-		new Finite().division(xx, yy);
+		new Finite().exteuclid(xx, yy);
 	}
 }
