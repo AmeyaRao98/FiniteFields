@@ -95,7 +95,7 @@ public class Finite {
 		return d;
 	}
 
-	Euclid exteuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
+	Euclid extEuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
 		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
 		// the algorithm requires x=1 and y=0.
 		
@@ -136,6 +136,12 @@ public class Finite {
 		return e;
 	}
 
+	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
+		return(division(a,p).remainder == division(b,p).remainder);
+	}
+	
+	
+	
 	Polynomial xpow(int pow,int mod){
 		Polynomial z = new Polynomial(null, mod);
 		z.add1Coefficient(1);
@@ -161,6 +167,6 @@ public class Finite {
 		int y[] = {6, 7, 3, 4, 3, 12};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		new Finite().exteuclid(xx, yy);
+		new Finite().extEuclid(xx, yy);
 	}
 }

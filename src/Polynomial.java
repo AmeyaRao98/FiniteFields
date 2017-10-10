@@ -58,7 +58,7 @@ public class Polynomial {
 		}
 	}
 	
-	boolean reducable(int p, Polynomial f){
+	boolean reducible(int p, Polynomial f){
 		return true;
 		
 	}
