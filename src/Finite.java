@@ -139,26 +139,6 @@ public class Finite {
 	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
 		return(division(a,p).remainder == division(b,p).remainder);
 	}
-
-	
-	
-	
-	boolean irreducible(Polynomial f){//Algorithm 4.1.4
-		int t=1;
-		Polynomial one = new Polynomial(new int[]{1}, f.mod);
-		while (sub(extEuclid(f, xpowminusx((int)Math.pow(f.mod, t),f.mod) ).gcd, one).leadingCoef() == 0 ){
-			//Our programme may return the gcd as [0,0,0,1](for example), which is not equal to [1]
-			//Therefore, we subtract one from the gcd and then check if the result's leading coefficient is zero
-			//If it is, the gcd is 1.
-			t++;
-		}
-		return(t==f.degree());
-	}
-	
-	
-
-	
-	
 	
 
 	Polynomial xpow(int pow,int mod){
@@ -185,10 +165,10 @@ public class Finite {
 
 	public static void main(String[] args) {
 		int mod = 2;
-		int x[] = {1,1,1,1};
+		int x[] = {1,1,0,1};
 		int y[] = {1,0,0,1,0};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		new Finite().irreducible(xx);
+		new Finite().product(xx,yy);
 	}
 }

@@ -10,6 +10,8 @@ public class Field {
 	Field(int p, int n){
 		zmod = p;
 		pdegree = n;
+		
+		
 	}
 
 	int size(){

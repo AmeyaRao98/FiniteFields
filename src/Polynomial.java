@@ -57,6 +57,21 @@ public class Polynomial extends Finite {
 			coefficients.get(i).set(coef[i]);
 		}
 	}
+	
+	boolean irreducible(Polynomial f){//Algorithm 4.1.4
+		//Finite fin = new Finite();
+		
+		int t=1;
+		Polynomial one = new Polynomial(new int[]{1}, mod);
+		while (sub(extEuclid(f, xpowminusx((int)Math.pow(mod, t),mod) ).gcd, one).leadingCoef() == 0 ){
+			//Our programme may return the gcd as [0,0,0,1](for example), which is not equal to [1]
+			//Therefore, we subtract one from the gcd and then check if the result's leading coefficient is zero
+			//If it is, the gcd is 1.
+			t++;
+		}
+		return(t==f.degree());
+	}
+	
 
 	void displayPoly(){
 
