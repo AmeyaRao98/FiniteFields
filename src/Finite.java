@@ -4,23 +4,23 @@ import java.util.*;
 
 public class Finite {
 
-	Polynomial sum(Polynomial x, Polynomial y){
-		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
+	Polynomial sum(Polynomial a, Polynomial b){
+		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
-		int max = Math.max(x.size(), y.size());
-		int xdiff = max - x.size();
-		int ydiff = max - y.size();
+		int max = Math.max(a.size(), b.size());
+		int adiff = max - a.size();
+		int bdiff = max - b.size();
 		//elements of the polynomial that have the same degree have the same distance from the end of the ArrayList
 
 		for(int i = 0; i < max; i++){
-			if(x.size() - y.size() > i){ //if y's degree is less than x's degree
-				z.add1Coefficient( x.getCoefficient(i));//directly add the values of x for which we don't have a value of y with the same degree
+			if(a.size() - b.size() > i){ //if b's degree is less than a's degree
+				z.add1Coefficient( a.getCoefficient(i));//directly add the values of a for which we don't have a value of b with the same degree
 			}
-			else if(y.size() - x.size()>i){//if x's degree is less than y's degree
-				z.add1Coefficient( y.getCoefficient( i));//directly add the values of y for which we don't have a value of x with the same degree
+			else if(b.size() - a.size()>i){//if a's degree is less than b's degree
+				z.add1Coefficient( b.getCoefficient( i));//directly add the values of b for which we don't have a value of a with the same degree
 			}
-			else{//if we reach values for which x and y have equal degree
-				z.add1Coefficient( x.getCoefficient( i - xdiff) + y.getCoefficient( i - ydiff));//we add the values and put in z
+			else{//if we reach values for which a and b have equal degree
+				z.add1Coefficient( a.getCoefficient( i - adiff) + b.getCoefficient( i - bdiff));//we add the values and put in z
 			}
 		}
 		//z.displayPoly();
@@ -28,33 +28,33 @@ public class Finite {
 
 	}
 
-	Polynomial scalarmul(Polynomial x, int a){
-		Polynomial z = new Polynomial(null, x.mod);
-		for(int i = 0; i < x.size(); i++){//loop through the list of coefficients
+	Polynomial scalarmul(Polynomial a, int mul){
+		Polynomial z = new Polynomial(null, a.mod);
+		for(int i = 0; i < a.size(); i++){//loop through the list of coefficients
 
-			z.add1Coefficient(x.getCoefficient(i) * a);//adds the scalar multiple to the new array
+			z.add1Coefficient(a.getCoefficient(i) * mul);//adds the scalar multiple to the new array
 		}
 		//z.displayPoly();
 		return z;
 	}
 
-	Polynomial sub(Polynomial x, Polynomial y){
-		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
+	Polynomial sub(Polynomial a, Polynomial b){
+		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
-		int max = Math.max(x.size(), y.size());
-		int xdiff = max - x.size();
-		int ydiff = max - y.size();
+		int max = Math.max(a.size(), b.size());
+		int adiff = max - a.size();
+		int bdiff = max - b.size();
 		//elements of the polynomial that have the same degree have the same distance from the end of the ArrayList
 
 		for(int i = 0; i < max; i++){
-			if( x.size() - y.size() > i){//if y's degree is less than x's degree
-				z.add1Coefficient( x.getCoefficient( i));//directly add the values of x for which we don't have a value of y with the same degree
+			if( a.size() - b.size() > i){//if b's degree is less than a's degree
+				z.add1Coefficient( a.getCoefficient( i));//directly add the values of a for which we don't have a value of b with the same degree
 			}
-			else if( y.size() - x.size() > i){//if x's degree is less than y's degree
-				z.add1Coefficient( -y.getCoefficient( i));//directly add the values of y(with a minus) for which we don't have a value of x with the same degree
+			else if( b.size() - a.size() > i){//if a's degree is less than b's degree
+				z.add1Coefficient( -b.getCoefficient( i));//directly add the values of b(with a minus) for which we don't have a value of a with the same degree
 			}
-			else{//if we reach values for which x and y have equal degree
-				z.add1Coefficient( x.getCoefficient( i - xdiff) - y.getCoefficient( i - ydiff));//we subtract y from x and the values and put in z
+			else{//if we reach values for which a and b have equal degree
+				z.add1Coefficient( a.getCoefficient( i - adiff) - b.getCoefficient( i - bdiff));//we subtract b from a and the values and put in z
 			}
 		}
 		//z.displayPoly();
@@ -62,33 +62,32 @@ public class Finite {
 
 	}
 
-	Polynomial product(Polynomial x, Polynomial y) {
-		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
+	Polynomial product(Polynomial a, Polynomial b) {
+		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
-		for (int i = 0; i < x.size() + y.size() - 1; i++) {
+		for (int i = 0; i < a.size() + b.size() - 1; i++) {
 			z.add1Coefficient(0);
 		}
 
-		for (int i = 0; i < x.size(); i++) {
-			for (int j = 0; j < y.size(); j++) {
-				z.set1Coefficient(i + j, z.getCoefficient( i + j)+ (x.getCoefficient( i) * y.getCoefficient( j)));
+		for (int i = 0; i < a.size(); i++) {
+			for (int j = 0; j < b.size(); j++) {
+				z.set1Coefficient(i + j, z.getCoefficient( i + j)+ (a.getCoefficient( i) * b.getCoefficient( j)));
 			}
 		}
 		//z.displayPoly();
 		return z;
 	}
 
-	Division division(Polynomial x, Polynomial y) {//Algorithm 1.2.6 [Long Division]
-		Division d = new Division(new Polynomial(null, x.mod), x);//This objects contains the quotient and remainder and will be returned at the end
-		int lc=0;//stores lc(d.remainder)/lc(y)
-		Polynomial xx = new Polynomial(null,x.mod);//stores x^(deg(d.remainder)-deg(y)
+	Division division(Polynomial a, Polynomial b) {//Algorithm 1.2.6 [Long Division]
+		Division d = new Division(new Polynomial(null, a.mod), a);//This object contains the quotient and remainder and will be returned at the end
+		int lc = 0;//stores lc(d.remainder)/lc(b)
+		Polynomial xx = new Polynomial(null,a.mod);//stores a^(deg(d.remainder)-deg(b)
+		while(d.remainder.degree() >= b.degree() && d.remainder.leadingCoef()!=0){
+			lc = findDiv(d.remainder.leadingCoef(), b.leadingCoef(), a.mod);
+			xx = xpow(d.remainder.degree() - b.degree(), a.mod);
 
-		while(d.remainder.degree() >= y.degree()){
-			lc = findDiv(d.remainder.leadingCoef(), y.leadingCoef(), x.mod);
-			xx = xpow(d.remainder.degree() - y.degree(),x.mod);
-
-			d.quotient = sum(d.quotient, scalarmul(xx,lc));
-			d.remainder = sub(d.remainder, scalarmul(product(xx,y),lc));
+			d.quotient = sum(d.quotient, scalarmul(xx, lc));
+			d.remainder = sub(d.remainder, scalarmul(product(xx, b), lc));
 
 		}
 		//d.quotient.displayPoly();
@@ -96,20 +95,51 @@ public class Finite {
 		return d;
 	}
 
-	Euclid exteuclid(Polynomial x, Polynomial y){// Algorithm 1.2.10 + 1.2.11
-		Euclid e = new Euclid(new Polynomial(null, x.mod), new Polynomial(null, x.mod), new Polynomial(null, x.mod));
-		Polynomial r = new Polynomial(null,x.mod);//q
+	Euclid exteuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
+		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(null, a.mod), new Polynomial(null, a.mod));
+		Polynomial r = new Polynomial(null, a.mod);//q
 
-		while(y.leadingCoef()!=0){//finding the gcd: 1.2.10
-			r = division(x,y).remainder;
-			x = y;
-			y = r;
+		Polynomial ac = a;//copy of a for 1.2.11
+		Polynomial bc = b;//copy of b for 1.2.11
+		e.x.add1Coefficient(1);//x=1
+		e.y.add1Coefficient(0);//y=0
+		Polynomial u = new Polynomial(new int[]{0}, a.mod);//u=0
+		Polynomial v = new Polynomial(new int[]{1}, a.mod);//v=1
+		Polynomial xp = new Polynomial(null, a.mod);//x'
+		Polynomial yp = new Polynomial(null, a.mod);//y'
+		Polynomial q = new Polynomial(null, a.mod);//q
+
+
+		while(b.leadingCoef()!=0){//finding the gcd: 1.2.10
+			r = division(a,b).remainder;
+			a = b;
+			b = r;
+		}
+		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11
+			q = division(ac,bc).quotient;
+			System.out.print("q: ");
+			q.displayPoly();
+			ac = bc;
+			System.out.print("ac: ");
+			
+			bc = division(ac,bc).remainder;
+			System.out.println("bc: " + bc);
+			xp = e.x;
+			System.out.println("xp: " + xp);
+			yp = e.y;
+			System.out.println("yp: " + yp);
+			e.x = u;
+			System.out.println("e.x " +e.x);
+			e.y = v;
+			System.out.println("e.y " + e.y);
+			u = sub(xp, product(q,u));
+			v = sub(yp, product(q,v));
 		}
 
-		e.gcd = x;
+		e.gcd = a;
 		e.gcd.displayPoly();
-		//e.x.displayPoly();
-		//e.y.displayPoly();
+		e.x.displayPoly();
+		e.y.displayPoly();
 		return e;
 	}
 
@@ -124,19 +154,20 @@ public class Finite {
 
 	int findDiv(int r,int b,int m){
 		int i=0;
-		for( i=1 ; i<=m ; i++){
+		for( i=0 ; i<m ; i++){
 			if(( b * i) % m == r){
 				return i;
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	public static void main(String[] args) {
-		int x[] = {3 ,4, 3, 4};
-		int y[] = {3, 4, 0, 3};
-		Polynomial xx = new Polynomial(x, 5);
-		Polynomial yy = new Polynomial(y, 5);
+		int mod = 7;
+		int x[] = {2, 1};
+		int y[] = {2, 2};
+		Polynomial xx = new Polynomial(x, mod);
+		Polynomial yy = new Polynomial(y, mod);
 		new Finite().exteuclid(xx, yy);
 	}
 }
