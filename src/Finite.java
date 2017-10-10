@@ -96,13 +96,14 @@ public class Finite {
 	}
 
 	Euclid exteuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
-		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(null, a.mod), new Polynomial(null, a.mod));
+		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
+		// the algorithm requires x=1 and y=0.
+		
 		Polynomial r = new Polynomial(null, a.mod);//q
 
 		Polynomial ac = a;//copy of a for 1.2.11
 		Polynomial bc = b;//copy of b for 1.2.11
-		e.x.add1Coefficient(1);//x=1
-		e.y.add1Coefficient(0);//y=0
+		Polynomial c = b; // copy of b, c is going to be the temporary storage for b
 		Polynomial u = new Polynomial(new int[]{0}, a.mod);//u=0
 		Polynomial v = new Polynomial(new int[]{1}, a.mod);//v=1
 		Polynomial xp = new Polynomial(null, a.mod);//x'
@@ -117,21 +118,13 @@ public class Finite {
 		}
 		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11
 			q = division(ac,bc).quotient;
-			System.out.print("q: ");
-			q.displayPoly();
-			ac = bc;
-			System.out.print("ac: ");
-			
+			c = bc;
 			bc = division(ac,bc).remainder;
-			System.out.println("bc: " + bc);
+			ac = c;
 			xp = e.x;
-			System.out.println("xp: " + xp);
 			yp = e.y;
-			System.out.println("yp: " + yp);
 			e.x = u;
-			System.out.println("e.x " +e.x);
 			e.y = v;
-			System.out.println("e.y " + e.y);
 			u = sub(xp, product(q,u));
 			v = sub(yp, product(q,v));
 		}
@@ -163,9 +156,9 @@ public class Finite {
 	}
 
 	public static void main(String[] args) {
-		int mod = 7;
-		int x[] = {2, 1};
-		int y[] = {2, 2};
+		int mod = 13;
+		int x[] = {5, 11, 9, 11, 3, 12, 0};
+		int y[] = {6, 7, 3, 4, 3, 12};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		new Finite().exteuclid(xx, yy);
