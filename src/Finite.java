@@ -5,7 +5,7 @@ import java.util.*;
 public class Finite {
 
 	Polynomial sum(Polynomial x, Polynomial y){
-		Polynomial z = new Polynomial(null, x.mod);//we assume that x,y and z(by extension) have the same mod
+		Polynomial z = new Polynomial(null, x.mod);// we assume that x,y and z(by extension) have the same mod
 
 		int max = Math.max(x.size(), y.size());
 		int xdiff = max - x.size();
@@ -106,7 +106,7 @@ public class Finite {
 			y = r;
 		}
 
-		e.gcd = x;
+		e.gcd = x;//exexexex
 		e.gcd.displayPoly();
 		//e.x.displayPoly();
 		//e.y.displayPoly();
