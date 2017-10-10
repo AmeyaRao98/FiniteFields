@@ -57,9 +57,13 @@ public class Polynomial {
 			coefficients.get(i).set(coef[i]);
 		}
 	}
+	
+	boolean reducable(int p, Polynomial f){
+		return true;
+		
+	}
 
 	void displayPoly(){
-
 
 		String coef="";
 		String result="";
