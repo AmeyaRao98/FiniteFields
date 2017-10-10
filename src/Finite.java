@@ -4,8 +4,13 @@ import java.util.*;
 
 public class Finite {
 
+<<<<<<< HEAD
 	Polynomial sum(Polynomial a, Polynomial b){
 		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
+=======
+	Polynomial sum(Polynomial x, Polynomial y){
+		Polynomial z = new Polynomial(null, x.mod);// we assume that x,y and z(by extension) have the same mod
+>>>>>>> 845d73b12d52004ce7740b92c916173146d5df72
 
 		int max = Math.max(a.size(), b.size());
 		int adiff = max - a.size();
