@@ -106,7 +106,7 @@ public class Finite {
 			y = r;
 		}
 
-		e.gcd = x;//exexexex
+		e.gcd = x;
 		e.gcd.displayPoly();
 		//e.x.displayPoly();
 		//e.y.displayPoly();
