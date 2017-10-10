@@ -169,6 +169,7 @@ public class Finite {
 		int y[] = {1,0,0,1,0};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
+		Field f = new Field(2,2);
 		new Finite().product(xx,yy);
 	}
 }

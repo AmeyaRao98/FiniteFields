@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Field {
 	int zmod;
@@ -10,19 +11,11 @@ public class Field {
 	Field(int p, int n){
 		zmod = p;
 		pdegree = n;
-		
-		
-	}
 
-	int size(){
-		return (int)Math.pow(zmod,pdegree);
-	}
+		//code to generate all the elements in the field
+		//The field has p^n elements. 
+		//we need to generate random elements and use Polynomial.irreducible(Polynomial) to see if it's an element
+		//once we obtain p^n unique elements, we stop the algorithm
 
-	void displayelements(){
-		for(int i = 0; i <elements.size();i++){
-			elements.get(i).displayPoly();
-		}
-
-		
 	}
 }
