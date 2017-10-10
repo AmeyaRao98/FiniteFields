@@ -2,7 +2,7 @@ import java.util.*;
 
 //Degree 0 corresponds to the highest power of the polynomial in the arraylist
 
-public class Polynomial {
+public class Polynomial extends Finite {
 	ArrayList<IntegerMod> coefficients = new ArrayList<IntegerMod>();
 	int mod;
 
@@ -56,11 +56,6 @@ public class Polynomial {
 		for (int i = 0; i < coef.length; i++) {
 			coefficients.get(i).set(coef[i]);
 		}
-	}
-	
-	boolean reducible(int p, Polynomial f){
-		return true;
-		
 	}
 
 	void displayPoly(){

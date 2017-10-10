@@ -21,5 +21,6 @@ public class Field {
 			elements.get(i).displayPoly();
 		}
 
+		
 	}
 }

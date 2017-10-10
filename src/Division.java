@@ -6,6 +6,5 @@ public class Division {
 	Division(Polynomial quo, Polynomial rem){
 		quotient = quo;
 		remainder = rem;
-		
 	}
 }

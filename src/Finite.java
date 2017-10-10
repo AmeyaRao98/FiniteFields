@@ -98,7 +98,7 @@ public class Finite {
 	Euclid extEuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
 		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
 		// the algorithm requires x=1 and y=0.
-		
+
 		Polynomial r = new Polynomial(null, a.mod);//q
 
 		Polynomial ac = a;//copy of a for 1.2.11
@@ -130,18 +130,37 @@ public class Finite {
 		}
 
 		e.gcd = a;
-		e.gcd.displayPoly();
-		e.x.displayPoly();
-		e.y.displayPoly();
+		//e.gcd.displayPoly();
+		//e.x.displayPoly();
+		//e.y.displayPoly();
 		return e;
 	}
 
 	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
 		return(division(a,p).remainder == division(b,p).remainder);
 	}
+
 	
 	
 	
+	boolean irreducible(Polynomial f){//Algorithm 4.1.4
+		int t=1;
+		Polynomial one = new Polynomial(new int[]{1}, f.mod);
+		while (sub(extEuclid(f, xpowminusx((int)Math.pow(f.mod, t),f.mod) ).gcd, one).leadingCoef() == 0 ){
+			//Our programme may return the gcd as [0,0,0,1](for example), which is not equal to [1]
+			//Therefore, we subtract one from the gcd and then check if the result's leading coefficient is zero
+			//If it is, the gcd is 1.
+			t++;
+		}
+		return(t==f.degree());
+	}
+	
+	
+
+	
+	
+	
+
 	Polynomial xpow(int pow,int mod){
 		Polynomial z = new Polynomial(null, mod);
 		z.add1Coefficient(1);
@@ -151,6 +170,9 @@ public class Finite {
 		return z;
 	}
 
+	Polynomial xpowminusx(int pow,int mod){
+		return sub(xpow(pow,mod), new Polynomial(new int[]{1,0},mod));
+	}
 	int findDiv(int r,int b,int m){
 		int i=0;
 		for( i=0 ; i<m ; i++){
@@ -162,11 +184,11 @@ public class Finite {
 	}
 
 	public static void main(String[] args) {
-		int mod = 13;
-		int x[] = {5, 11, 9, 11, 3, 12, 0};
-		int y[] = {6, 7, 3, 4, 3, 12};
+		int mod = 2;
+		int x[] = {1,1,1,1};
+		int y[] = {1,0,0,1,0};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		new Finite().extEuclid(xx, yy);
+		new Finite().irreducible(xx);
 	}
 }
