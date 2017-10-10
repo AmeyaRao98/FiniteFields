@@ -59,8 +59,6 @@ public class Polynomial extends Finite {
 	}
 	
 	boolean irreducible(Polynomial f){//Algorithm 4.1.4
-		//Finite fin = new Finite();
-		
 		int t=1;
 		Polynomial one = new Polynomial(new int[]{1}, mod);
 		while (sub(extEuclid(f, xpowminusx((int)Math.pow(mod, t),mod) ).gcd, one).leadingCoef() == 0 ){
