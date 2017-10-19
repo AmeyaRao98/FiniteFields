@@ -162,10 +162,6 @@ public class Finite {
 		}
 		return -1;
 	}
-	
-	void irr(Polynomial x){
-		System.out.println(x.irreducible());
-	}
 
 	public static void main(String[] args) {
 		int mod = 5;
@@ -174,6 +170,6 @@ public class Finite {
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Field ff = new Field(9,3);
-		new Finite().irr(xx);
+		//new Finite().irr(xx);
 	}
 }
