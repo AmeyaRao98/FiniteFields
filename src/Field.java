@@ -12,10 +12,12 @@ public class Field {
 		zmod = p;
 		pdegree = n;
 
-		//code to generate all the elements in the field
-		//The field has p^n elements. 
-		//we need to generate random elements 
-		//once we obtain p^n unique elements, we stop the algorithm
+		for(int i = 0; i < p; i++){
+			for(int j = 0; j < n ; j++){
+				
 
+			}
+
+		}
 	}
 }
