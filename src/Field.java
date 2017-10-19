@@ -14,7 +14,7 @@ public class Field {
 
 		//code to generate all the elements in the field
 		//The field has p^n elements. 
-		//we need to generate random elements and use Polynomial.irreducible(Polynomial) to see if it's an element
+		//we need to generate random elements 
 		//once we obtain p^n unique elements, we stop the algorithm
 
 	}
