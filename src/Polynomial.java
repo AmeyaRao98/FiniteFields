@@ -57,7 +57,7 @@ public class Polynomial extends Finite {
 			coefficients.get(i).set(coef[i]);
 		}
 	}
-
+	
 	boolean irreducible(){//Algorithm 4.1.4
 		int t=1;
 		int copy[] = new int[coefficients.size()];
@@ -74,7 +74,7 @@ public class Polynomial extends Finite {
 		}
 		return(t==f.degree());
 	}
-
+	
 
 	void displayPoly(){
 

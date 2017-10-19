@@ -162,6 +162,18 @@ public class Finite {
 		}
 		return -1;
 	}
+	
+	void addTable(Polynomial a){
+		Field f = new Field(a.mod, a.degree());
+		
+		for(int i = 0; i < f.elements.size(); i++){
+			
+			for(int j = 0; j <  f.elements.size(); j++){
+				division(sum(f.elements.get(i), f.elements.get(j)), a).remainder.displayPoly();
+			}
+		}
+		
+	}
 
 	public static void main(String[] args) {
 		int mod = 5;
@@ -169,7 +181,6 @@ public class Finite {
 		int y[] = {1,0,0,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		Field ff = new Field(9,3);
-		//new Finite().irr(xx);
+		new Finite().scalarmul(xx, 1);
 	}
 }
