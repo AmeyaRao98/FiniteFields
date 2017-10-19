@@ -130,9 +130,9 @@ public class Finite {
 		}
 
 		e.gcd = a;
-		e.gcd.displayPoly();
-		e.x.displayPoly();
-		e.y.displayPoly();
+		//e.gcd.displayPoly();
+		//e.x.displayPoly();
+		//e.y.displayPoly();
 		return e;
 	}
 
@@ -162,13 +162,18 @@ public class Finite {
 		}
 		return -1;
 	}
+	
+	void irr(Polynomial x){
+		System.out.println(x.irreducible());
+	}
 
 	public static void main(String[] args) {
-		int mod = 11;
-		int x[] = {7,8,6,4,3,6,7,1,0,1};
+		int mod = 5;
+		int x[] = {3,3,3};
 		int y[] = {1,0,0,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		new Finite().extEuclid(xx,yy);
+		Field ff = new Field(9,3);
+		new Finite().irr(xx);
 	}
 }

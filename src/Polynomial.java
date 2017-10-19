@@ -57,9 +57,14 @@ public class Polynomial extends Finite {
 			coefficients.get(i).set(coef[i]);
 		}
 	}
-	
-	boolean irreducible(Polynomial f){//Algorithm 4.1.4
+
+	boolean irreducible(){//Algorithm 4.1.4
 		int t=1;
+		int copy[] = new int[coefficients.size()];
+		for(int i = 0; i < coefficients.size();i++){
+			copy[i] = coefficients.get(i).number;
+		}
+		Polynomial f = new Polynomial(copy, mod);
 		Polynomial one = new Polynomial(new int[]{1}, mod);
 		while (sub(extEuclid(f, xpowminusx((int)Math.pow(mod, t),mod) ).gcd, one).leadingCoef() == 0 ){
 			//Our programme may return the gcd as [0,0,0,1](for example), which is not equal to [1]
@@ -69,7 +74,7 @@ public class Polynomial extends Finite {
 		}
 		return(t==f.degree());
 	}
-	
+
 
 	void displayPoly(){
 
