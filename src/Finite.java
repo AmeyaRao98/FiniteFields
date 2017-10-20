@@ -271,14 +271,14 @@ public class Finite {
 
 
 	public static void main(String[] args) {
-		int mod = 2;
+		int mod = 3;
 		int x[] = {1,1,1};
 		int y[] = {1,1,1};
-		int ir[] = {1,1,1};
+		int ir[] = {1,2,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
 		Field fg = new Field(2,3);
-		new Finite().fieldOps(xx,yy,irrr);
+		new Finite().mulTable(irrr);
 	}
 }
