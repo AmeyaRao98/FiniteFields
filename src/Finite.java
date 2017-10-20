@@ -23,7 +23,7 @@ public class Finite {
 				z.add1Coefficient( a.getCoefficient( i - adiff) + b.getCoefficient( i - bdiff));//we add the values and put in z
 			}
 		}
-		//z.displayPoly();
+		z.displayPoly();
 		return z;
 
 	}
@@ -258,18 +258,14 @@ public class Finite {
 	ArrayList<Polynomial> irreducibles(int degree, int mod){
 		ArrayList<Polynomial> irrs = new ArrayList<Polynomial>();
 		Field f = new Field(mod, degree+1);
-		
+	
 		for(int i = 0; i < f.elements.size(); i++ ){
-			System.out.println("a");
 			if(f.elements.get(i).degree() == degree){
 				if(f.elements.get(i).irreducible()){
 					irrs.add(f.elements.get(i));
 				}
 			}
 		}
-		/*for(int j = 0; j < irrs.size(); j++){
-			irrs.get(j).displayPoly();
-		}*/
 		return irrs;
 
 	}
@@ -283,7 +279,6 @@ public class Finite {
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		Field fg = new Field(2,3);
-		new Finite().sum(xx,yy);
+		new Finite().irreducibles(2,2);
 	}
 }
