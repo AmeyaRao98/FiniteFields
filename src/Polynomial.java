@@ -116,4 +116,45 @@ public class Polynomial extends Finite {
 		}
 
 	}
+	
+	String adisplayPoly(){
+
+		String coef="";
+		String result="";
+		if(coefficients.size() < 1 || leadingCoef() == 0){
+			result = "0";
+		}
+		else{
+			for(int i=0; i<coefficients.size();i++){
+				coef="";
+				if(coefficients.get(i).number!=0){
+					if(coefficients.get(i).number!=1){
+						coef = Integer.toString(coefficients.get(i).number);
+					}
+					result+= ("+ " +coef + xdisp(coefficients.size()-i-1,coefficients.get(i).number)+" ");
+				}
+				if(!result.equals("")){
+					if(result.charAt(0)=='+'){
+						result = result.substring(2);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	String adisp(int a,int i){
+		if(a==0){
+			if(i==1){
+				return "1";
+			}
+			return "";
+		}
+		if(a==1){
+			return "a";
+		}
+		else{
+			return ("a^" +a);
+		}
+
+	}
 }

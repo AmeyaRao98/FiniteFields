@@ -115,7 +115,7 @@ public class Finite {
 			r = division(a,b).remainder;
 			a = b;
 			b = r;
-		/*}
+			/*}
 		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11*/
 			q = division(ac,bc).quotient;
 			c = bc;
@@ -139,7 +139,7 @@ public class Finite {
 	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
 		return(division(a,p).remainder == division(b,p).remainder);
 	}
-	
+
 
 	Polynomial xpow(int pow,int mod){
 		Polynomial z = new Polynomial(null, mod);
@@ -162,25 +162,86 @@ public class Finite {
 		}
 		return -1;
 	}
-	
+
 	void addTable(Polynomial a){
 		Field f = new Field(a.mod, a.degree());
+		int maxLen = maxLength(f);
+		Polynomial pdisp = new Polynomial(null, a.mod);
+		
+		System.out.print(padding(maxLen)+ "|");
+		for(int k = 0; k < f.elements.size(); k++){
+			System.out.print(f.elements.get(k).adisplayPoly() + padding(maxLength(f) - f.elements.get(k).adisplayPoly().length()));
+		}
+		System.out.println("");
+		for(int l = 0; l < (maxLength(f)+2)*(f.elements.size()+1)+1;l++){
+			System.out.print("-");
+		}
+		System.out.println("");
+		
+
 		
 		for(int i = 0; i < f.elements.size(); i++){
-			
+			System.out.print(f.elements.get(i).adisplayPoly() + padding(maxLength(f) - f.elements.get(i).adisplayPoly().length())+"|");
 			for(int j = 0; j <  f.elements.size(); j++){
-				division(sum(f.elements.get(i), f.elements.get(j)), a).remainder.displayPoly();
+				pdisp = division(sum(f.elements.get(i), f.elements.get(j)), a).remainder;
+				System.out.print(pdisp.adisplayPoly() + padding(maxLen - pdisp.adisplayPoly().length()) );
 			}
+			System.out.println("");
+			
 		}
+
+	}
+	
+	void mulTable(Polynomial a){
+		Field f = new Field(a.mod, a.degree());
+		int maxLen = maxLength(f);
+		Polynomial pdisp = new Polynomial(null, a.mod);
 		
+		System.out.print(padding(maxLen)+ "|");
+		for(int k = 0; k < f.elements.size(); k++){
+			System.out.print(f.elements.get(k).adisplayPoly() + padding(maxLength(f) - f.elements.get(k).adisplayPoly().length()));
+		}
+		System.out.println("");
+		for(int l = 0; l < (maxLength(f)+2)*(f.elements.size()+1)+1;l++){
+			System.out.print("-");
+		}
+		System.out.println("");
+		
+
+		
+		for(int i = 0; i < f.elements.size(); i++){
+			System.out.print(f.elements.get(i).adisplayPoly() + padding(maxLength(f) - f.elements.get(i).adisplayPoly().length())+"|");
+			for(int j = 0; j <  f.elements.size(); j++){
+				pdisp = division(product(f.elements.get(i), f.elements.get(j)), a).remainder;
+				System.out.print(pdisp.adisplayPoly() + padding(maxLen - pdisp.adisplayPoly().length()) );
+			}
+			System.out.println("");
+			
+		}
+
+	}
+
+	int maxLength(Field f){
+		if(f.pdegree==1){
+			return (f.zmod-1)/10 + 1;
+		}
+		return (((f.zmod-1)/10 + 1) + 5) * (f.pdegree-2) + 5 + 2*((f.zmod-1)/10 + 1);
+	}
+	String padding(int n){
+		String thing = "";
+		for(int i = 0; i <= n; i++){
+			thing+=" ";
+		}
+		return thing + "|";
 	}
 
 	public static void main(String[] args) {
-		int mod = 5;
-		int x[] = {3,3,3};
+		int mod = 3;
+		int x[] = {2, 2,1};
 		int y[] = {1,0,0,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
-		new Finite().scalarmul(xx, 1);
+		Field fg = new Field(2,3);
+		new Finite().mulTable(xx);
 	}
 }
