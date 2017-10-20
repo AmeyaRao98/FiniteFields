@@ -121,7 +121,7 @@ public class Polynomial extends Finite {
 
 		String coef="";
 		String result="";
-		if(coefficients.size() < 1 || leadingCoef() == 0){
+		if(coefficients.size() < 1 || leadingCoef() == 0 || coefficients == null){
 			result = "0";
 		}
 		else{

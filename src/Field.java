@@ -4,7 +4,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Field {
 	int zmod;
 	int pdegree;
-	Polynomial pmod;
 	ArrayList<Polynomial> elements = new ArrayList<Polynomial>();
 
 

@@ -167,7 +167,7 @@ public class Finite {
 		Field f = new Field(a.mod, a.degree());
 		int maxLen = maxLength(f);
 		Polynomial pdisp = new Polynomial(null, a.mod);
-		
+
 		System.out.print(padding(maxLen)+ "|");
 		for(int k = 0; k < f.elements.size(); k++){
 			System.out.print(f.elements.get(k).adisplayPoly() + padding(maxLength(f) - f.elements.get(k).adisplayPoly().length()));
@@ -177,9 +177,9 @@ public class Finite {
 			System.out.print("-");
 		}
 		System.out.println("");
-		
 
-		
+
+
 		for(int i = 0; i < f.elements.size(); i++){
 			System.out.print(f.elements.get(i).adisplayPoly() + padding(maxLength(f) - f.elements.get(i).adisplayPoly().length())+"|");
 			for(int j = 0; j <  f.elements.size(); j++){
@@ -187,16 +187,16 @@ public class Finite {
 				System.out.print(pdisp.adisplayPoly() + padding(maxLen - pdisp.adisplayPoly().length()) );
 			}
 			System.out.println("");
-			
+
 		}
 
 	}
-	
+
 	void mulTable(Polynomial a){
 		Field f = new Field(a.mod, a.degree());
 		int maxLen = maxLength(f);
 		Polynomial pdisp = new Polynomial(null, a.mod);
-		
+
 		System.out.print(padding(maxLen)+ "|");
 		for(int k = 0; k < f.elements.size(); k++){
 			System.out.print(f.elements.get(k).adisplayPoly() + padding(maxLength(f) - f.elements.get(k).adisplayPoly().length()));
@@ -206,9 +206,9 @@ public class Finite {
 			System.out.print("-");
 		}
 		System.out.println("");
-		
 
-		
+
+
 		for(int i = 0; i < f.elements.size(); i++){
 			System.out.print(f.elements.get(i).adisplayPoly() + padding(maxLength(f) - f.elements.get(i).adisplayPoly().length())+"|");
 			for(int j = 0; j <  f.elements.size(); j++){
@@ -216,18 +216,18 @@ public class Finite {
 				System.out.print(pdisp.adisplayPoly() + padding(maxLen - pdisp.adisplayPoly().length()) );
 			}
 			System.out.println("");
-			
+
 		}
 
 	}
 
-	int maxLength(Field f){
+	int maxLength(Field f){//returns the length of the longest possible element in a field
 		if(f.pdegree==1){
 			return (f.zmod-1)/10 + 1;
 		}
 		return (((f.zmod-1)/10 + 1) + 5) * (f.pdegree-2) + 5 + 2*((f.zmod-1)/10 + 1);
 	}
-	String padding(int n){
+	String padding(int n){//returns spaces equal to the input plus a bar at the end
 		String thing = "";
 		for(int i = 0; i <= n; i++){
 			thing+=" ";
@@ -235,13 +235,50 @@ public class Finite {
 		return thing + "|";
 	}
 
+	FieldOp fieldOps(Polynomial a, Polynomial b, Polynomial irr){
+		FieldOp ops = new FieldOp(); 
+		Polynomial one = new Polynomial(new int[]{1}, a.mod);
+		ops.ab = new Polynomial(new int[]{0}, 1);//returns 0 if b^-1 doesn't exist
+		ops.sum = division(sum(a,b), irr).remainder;
+		ops.product = division(product(a,b), irr).remainder;
+		if(sub(extEuclid(b, irr).gcd, one).leadingCoef() == 0){
+			ops.ab = division(product(a,extEuclid(b,irr).x), irr).remainder;
+		} 
+		//System.out.println(ops.sum.adisplayPoly());
+		//System.out.println(ops.product.adisplayPoly());
+		System.out.println(ops.ab.adisplayPoly());
+		return ops;
+
+	}
+
+	boolean irreducible(Polynomial a){
+		return a.irreducible();
+	}
+
+	ArrayList<Polynomial> irreducibles(int degree, int mod){
+		ArrayList<Polynomial> irrs = new ArrayList<Polynomial>();
+		Field f = new Field(mod, degree+1);
+		for(int i = 0; i < f.elements.size(); i++ ){
+			if(f.elements.get(i).degree() == degree){
+				if(f.elements.get(i).irreducible()){
+					irrs.add(f.elements.get(i));
+				}
+			}
+		}
+		return irrs;
+
+	}
+
+
 	public static void main(String[] args) {
-		int mod = 3;
-		int x[] = {2, 2,1};
-		int y[] = {1,0,0,1};
+		int mod = 2;
+		int x[] = {1,1,1};
+		int y[] = {1,1,1};
+		int ir[] = {1,1,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
+		Polynomial irrr = new Polynomial(ir, mod);
 		Field fg = new Field(2,3);
-		new Finite().mulTable(xx);
+		new Finite().fieldOps(xx,yy,irrr);
 	}
 }
