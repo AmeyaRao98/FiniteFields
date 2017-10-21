@@ -251,8 +251,8 @@ public class Finite {
 
 	}
 
-	boolean irreducible(Polynomial a){
-		return a.irreducible();
+	void irreducible(Polynomial a){
+		System.out.println(a.irreducible());
 	}
 
 	ArrayList<Polynomial> irreducibles(int degree, int mod){
