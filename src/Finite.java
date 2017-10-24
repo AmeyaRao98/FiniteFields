@@ -235,19 +235,16 @@ public class Finite {
 		return thing + "|";
 	}
 
-	FieldOp fieldOps(Polynomial a, Polynomial b, Polynomial irr){
-		FieldOp ops = new FieldOp(); 
+	void fieldOps(Polynomial a, Polynomial b, Polynomial irr){
 		Polynomial one = new Polynomial(new int[]{1}, a.mod);
-		ops.ab = new Polynomial(new int[]{0}, 1);//returns 0 if b^-1 doesn't exist
-		ops.sum = division(sum(a,b), irr).remainder;
-		ops.product = division(product(a,b), irr).remainder;
+		division(sum(a,b), irr).remainder.displayPoly();
+		division(product(a,b), irr).remainder.displayPoly();
 		if(sub(extEuclid(b, irr).gcd, one).leadingCoef() == 0){
-			ops.ab = division(product(a,extEuclid(b,irr).x), irr).remainder;
+			division(product(a,extEuclid(b,irr).x), irr).remainder.displayPoly();;
 		} 
-		//System.out.println(ops.sum.adisplayPoly());
-		//System.out.println(ops.product.adisplayPoly());
-		System.out.println(ops.ab.adisplayPoly());
-		return ops;
+		else {
+			System.out.println("b does not an inverse");
+		}
 
 	}
 
@@ -273,12 +270,12 @@ public class Finite {
 
 	public static void main(String[] args) {
 		int mod = 3;
-		int x[] = {1,1,1};
-		int y[] = {1,1,1};
-		int ir[] = {1,2,1};
+		int x[] = {8,3};
+		int y[] = {1,4};
+		int ir[] = {1,1,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		new Finite().irreducibles(2,2);
+		new Finite().fieldOps(xx,yy,irrr);
 	}
 }
