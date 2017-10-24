@@ -23,7 +23,7 @@ public class Finite {
 				z.add1Coefficient( a.getCoefficient( i - adiff) + b.getCoefficient( i - bdiff));//we add the values and put in z
 			}
 		}
-		z.displayPoly();
+		//z.displayPoly();
 		return z;
 
 	}
@@ -98,6 +98,12 @@ public class Finite {
 	Euclid extEuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
 		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
 		// the algorithm requires x=1 and y=0.
+		Polynomial big = biggerPoly(a,b);
+		Polynomial small = smallerPoly(a,b);
+		a = big;
+		b = small;
+		
+		
 
 		Polynomial r = new Polynomial(null, a.mod);//q
 
@@ -115,7 +121,7 @@ public class Finite {
 			r = division(a,b).remainder;
 			a = b;
 			b = r;
-			/*}
+		}
 		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11*/
 			q = division(ac,bc).quotient;
 			c = bc;
@@ -134,6 +140,68 @@ public class Finite {
 		//e.x.displayPoly();
 		//e.y.displayPoly();
 		return e;
+	}
+	
+	Polynomial biggerPoly(Polynomial a, Polynomial b){
+
+		int max = Math.max(a.size(), b.size());
+		int adiff = max - a.size();
+		int bdiff = max - b.size();
+		//elements of the polynomial that have the same degree have the same distance from the end of the ArrayList
+
+		for(int i = 0; i < max; i++){
+			if(a.size() - b.size() > i){ //if b's degree is less than a's degree
+				if(a.getCoefficient(i)>0){
+					return a;
+				}
+			}
+			else if(b.size() - a.size()>i){//if a's degree is less than b's degree
+				if(b.getCoefficient(i)>0){
+					return b;
+				}
+			}
+			else{//if we reach values for which a and b have equal degree
+				if(a.getCoefficient( i - adiff) > b.getCoefficient( i - bdiff)){
+					return a;
+				}
+				if(a.getCoefficient( i - adiff) < b.getCoefficient( i - bdiff)){
+					return b;
+				}
+			}
+		}
+		return a;
+
+	}
+	
+	Polynomial smallerPoly(Polynomial a, Polynomial b){
+
+		int max = Math.max(a.size(), b.size());
+		int adiff = max - a.size();
+		int bdiff = max - b.size();
+		//elements of the polynomial that have the same degree have the same distance from the end of the ArrayList
+
+		for(int i = 0; i < max; i++){
+			if(a.size() - b.size() > i){ //if b's degree is less than a's degree
+				if(a.getCoefficient(i)>0){
+					return b;
+				}
+			}
+			else if(b.size() - a.size()>i){//if a's degree is less than b's degree
+				if(b.getCoefficient(i)>0){
+					return a;
+				}
+			}
+			else{//if we reach values for which a and b have equal degree
+				if(a.getCoefficient( i - adiff) > b.getCoefficient( i - bdiff)){
+					return b;
+				}
+				if(a.getCoefficient( i - adiff) < b.getCoefficient( i - bdiff)){
+					return a;
+				}
+			}
+		}
+		return a;
+
 	}
 
 	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
@@ -248,10 +316,6 @@ public class Finite {
 
 	}
 
-	void irreducible(Polynomial a){
-		System.out.println(a.irreducible());
-	}
-
 	ArrayList<Polynomial> irreducibles(int degree, int mod){
 		ArrayList<Polynomial> irrs = new ArrayList<Polynomial>();
 		Field f = new Field(mod, degree+1);
@@ -269,13 +333,13 @@ public class Finite {
 
 
 	public static void main(String[] args) {
-		int mod = 3;
-		int x[] = {8,3};
-		int y[] = {1,4};
+		int mod = 5;
+		int x[] = {0,3,3};
+		int y[] = {3,4,3,4,5,5,6,7,8,8};
 		int ir[] = {1,1,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		new Finite().fieldOps(xx,yy,irrr);
+		new Finite().extEuclid(xx,yy).gcd.displayPoly();
 	}
 }
