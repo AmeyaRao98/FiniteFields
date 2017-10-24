@@ -4,7 +4,96 @@ import java.util.*;
 
 public class Finite {
 
-	Polynomial sum(Polynomial a, Polynomial b){
+
+
+	void masterFunction(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Would you like to perform an operation on polynomials or fields?");
+		System.out.println("1: Polynomials");
+		System.out.println("2: Fields");
+		System.out.println("0: Quit");
+
+		while(sc.hasNext()) {
+			int choice = sc.nextInt();
+
+			switch (choice){
+			case 1:
+				goToPolynomial();
+				break;
+			case 2:
+				goToField();
+				break;
+			case 0:
+				return;
+			}
+			if(!(choice >-1 && choice<3)){
+				System.out.println("Invalid");
+			}
+			System.out.println("Would you like to perform an operation on polynomials or fields?");
+			System.out.println("1: Polynomials");
+			System.out.println("2: Fields");
+			System.out.println("0: Quit");
+		}
+	}
+	
+	void goToPolynomial(){
+		Scanner sc = new Scanner(System.in);
+		int mod = 0;
+		ArrayList<Integer> inp1 = new ArrayList<Integer>();
+		ArrayList<Integer> inp2 = new ArrayList<Integer>();
+		int scmul=0;
+		ArrayList<Integer> thirdpoly = new ArrayList<Integer>();
+		
+		System.out.println("What operation would you like to perform?");
+		System.out.println("1: Addition");
+		System.out.println("2: Subtraction");
+		System.out.println("3: Scalar Multiplication");
+		System.out.println("4: Polynomial Multiplication");
+		System.out.println("5: Division");
+		System.out.println("6: Extended Euclidian Algorithn");
+		System.out.println("7: Check whether two polynomials are equal modulo a thrid polynomial");
+		System.out.println("0: Quit");
+
+		while(sc.hasNext()) {
+			int choice = sc.nextInt();
+			switch (choice){
+			case 1:
+				System.out.println("Enter the modulus");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial");
+				inp2 = acceptPoly();
+				
+				break;
+			case 2:
+				goToFields();
+				break;
+			case 0:
+				return;
+			}
+			if(!(choice >-1 && choice<3)){
+				System.out.println("Invalid");
+			}
+			System.out.println("Would you like to perform an operation on polynomials or fields?");
+			System.out.println("1: Polynomials");
+			System.out.println("2: Fields");
+			System.out.println("0: Quit");
+		}
+	}
+	
+	ArrayList<Integer> acceptPoly(){
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Integer> ting = new ArrayList<Integer>();
+		while(sc.hasNextInt()){
+			ting.add(sc.nextInt());
+		}
+		sc.next();
+		return ting;
+		
+	}
+
+	Polynomial sum(Polynomial a, Polynomial b){//returns a+b
 		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
 		int max = Math.max(a.size(), b.size());
@@ -27,7 +116,7 @@ public class Finite {
 
 	}
 
-	Polynomial scalarmul(Polynomial a, int mul){
+	Polynomial scalarmul(Polynomial a, int mul){//returns mul*(a)
 		Polynomial z = new Polynomial(null, a.mod);
 		for(int i = 0; i < a.size(); i++){//loop through the list of coefficients
 
@@ -36,7 +125,7 @@ public class Finite {
 		return z;
 	}
 
-	Polynomial sub(Polynomial a, Polynomial b){
+	Polynomial sub(Polynomial a, Polynomial b){//returns a-b
 		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
 		int max = Math.max(a.size(), b.size());
@@ -59,7 +148,7 @@ public class Finite {
 
 	}
 
-	Polynomial product(Polynomial a, Polynomial b) {
+	Polynomial product(Polynomial a, Polynomial b) {//returns a*b
 		Polynomial z = new Polynomial(null, a.mod);//we assume that a,y and z(by extension) have the same mod
 
 		for (int i = 0; i < a.size() + b.size() - 1; i++) {
@@ -94,14 +183,13 @@ public class Finite {
 	Euclid extEuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
 		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
 		// the algorithm requires x=1 and y=0.
-		
-		Polynomial big = biggerPoly(a,b);
-		Polynomial small = smallerPoly(a,b);
-		a = big;
-		b = small;
+
+		if(b == biggerPoly(a,b)){
+			Polynomial temp = b;
+			b = a;
+			a = temp;
+		}
 		//the algorithm doesn't work consistently unless a>b
-		
-		
 
 		Polynomial r = new Polynomial(null, a.mod);//q
 
@@ -119,7 +207,7 @@ public class Finite {
 			r = division(a,b).remainder;
 			a = b;
 			b = r;
-		/*}
+			/*}
 		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11*/
 			q = division(ac,bc).quotient;
 			c = bc;
@@ -139,7 +227,7 @@ public class Finite {
 		//e.y.displayPoly();
 		return e;
 	}
-	
+
 	Polynomial biggerPoly(Polynomial a, Polynomial b){//returns the bigger polynomial
 
 		int max = Math.max(a.size(), b.size());
@@ -170,37 +258,6 @@ public class Finite {
 		return a;
 
 	}
-	
-	Polynomial smallerPoly(Polynomial a, Polynomial b){//returns the smaller polynomial
-
-		int max = Math.max(a.size(), b.size());
-		int adiff = max - a.size();
-		int bdiff = max - b.size();
-		//elements of the polynomial that have the same degree have the same distance from the end of the ArrayList
-
-		for(int i = 0; i < max; i++){
-			if(a.size() - b.size() > i){ //if b's degree is less than a's degree
-				if(a.getCoefficient(i)>0){
-					return b;
-				}
-			}
-			else if(b.size() - a.size()>i){//if a's degree is less than b's degree
-				if(b.getCoefficient(i)>0){
-					return a;
-				}
-			}
-			else{//if we reach values for which a and b have equal degree
-				if(a.getCoefficient( i - adiff) > b.getCoefficient( i - bdiff)){
-					return b;
-				}
-				if(a.getCoefficient( i - adiff) < b.getCoefficient( i - bdiff)){
-					return a;
-				}
-			}
-		}
-		return a;
-
-	}
 
 	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){//checks whether two polynomials are equal modulo a third poylonmial
 		return(division(a,p).remainder == division(b,p).remainder);
@@ -219,8 +276,8 @@ public class Finite {
 	Polynomial xpowminusx(int pow,int mod){//returns x^pow - x
 		return sub(xpow(pow,mod), new Polynomial(new int[]{1,0},mod));
 	}
-	
-	
+
+
 	int findDiv(int r,int b,int m){//finds the quotient of b that gives r during division modulo m
 		int i=0;
 		for( i=0 ; i<m ; i++){
@@ -288,22 +345,22 @@ public class Finite {
 		}
 
 	}
-	
-	
+
+
 	ArrayList<Polynomial> primitives(int degree, int mod){//returns all primitive elements in a field
 		ArrayList<Polynomial> primis = new ArrayList<Polynomial>();
 		Field f = new Field(mod, degree);
-	
+
 		for(int i = 0; i < f.elements.size(); i++ ){
-				if(primitive(f, f.elements.get(i))){
-					primis.add(f.elements.get(i));
-				}
+			if(primitive(f, f.elements.get(i))){
+				primis.add(f.elements.get(i));
+			}
 		}
 		return primis;
 
 	}
-	
-	boolean primitive(Field f, Polynomial a){
+
+	boolean primitive(Field f, Polynomial a){//checks if an element is primitive
 		ArrayList<Integer> primdivs = primeDivisors(f.pdegree-1);
 		int i = 1;
 		Polynomial one = new Polynomial(new int[]{1}, a.mod);
@@ -312,33 +369,36 @@ public class Finite {
 		}
 		return(i <= f.zmod);
 	}
-	
-	
-	
+
+
+
 	Polynomial polyPow(Polynomial a,int pow){//returns a^pow
 		Polynomial z = new Polynomial(new int[]{1},a.mod);
-		
+
 		for(int i=0;i<pow;i++){
 			z = product(z, a);
 		}
 		return z;
 	}
 
-	
+
 	ArrayList<Integer> primeDivisors(int n){//creates an arraylist with the prime divisors of n
 		ArrayList<Integer> primdivs = new ArrayList<Integer>();
 		if(n%2==0){
 			primdivs.add(2);
 		}
 		n = repeatedDiv(n,2);
-		
+
 		for (int i = 3; i <= Math.sqrt(n); i+= 2) {
-            while (n%i == 0)
-            {
-                primdivs.add(i);
-                n = repeatedDiv(n,i);
-            }
-        }
+			while (n%i == 0)
+			{
+				primdivs.add(i);
+				n = repeatedDiv(n,i);
+			}
+		}
+		if(n>2){
+			primdivs.add(n);
+		}
 		return primdivs;
 	}
 	int repeatedDiv(int n, int d){
@@ -379,7 +439,7 @@ public class Finite {
 	ArrayList<Polynomial> irreducibles(int degree, int mod){//returns all irreducible polynomials of the given degree
 		ArrayList<Polynomial> irrs = new ArrayList<Polynomial>();
 		Field f = new Field(mod, degree+1);
-	
+
 		for(int i = 0; i < f.elements.size(); i++ ){
 			if(f.elements.get(i).degree() == degree){
 				if(f.elements.get(i).irreducible()){
@@ -394,12 +454,12 @@ public class Finite {
 
 	public static void main(String[] args) {
 		int mod = 3;
-		int x[] = {1,1};
-		int y[] = {0};
+		int x[] = {1,2,4};
+		int y[] = {1,1};
 		int ir[] = {1,1,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		new Finite().mulTable(irrr);
+		new Finite().extEuclid(xx,yy).gcd.displayPoly();
 	}
 }
