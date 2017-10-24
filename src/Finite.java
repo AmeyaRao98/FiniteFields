@@ -23,7 +23,6 @@ public class Finite {
 				z.add1Coefficient( a.getCoefficient( i - adiff) + b.getCoefficient( i - bdiff));//we add the values and put in z
 			}
 		}
-		//z.displayPoly();
 		return z;
 
 	}
@@ -34,7 +33,6 @@ public class Finite {
 
 			z.add1Coefficient(a.getCoefficient(i) * mul);//adds the scalar multiple to the new array
 		}
-		//z.displayPoly();
 		return z;
 	}
 
@@ -57,7 +55,6 @@ public class Finite {
 				z.add1Coefficient( a.getCoefficient( i - adiff) - b.getCoefficient( i - bdiff));//we subtract b from a and the values and put in z
 			}
 		}
-		//z.displayPoly();
 		return z;
 
 	}
@@ -74,7 +71,6 @@ public class Finite {
 				z.set1Coefficient(i + j, z.getCoefficient( i + j)+ (a.getCoefficient( i) * b.getCoefficient( j)));
 			}
 		}
-		//z.displayPoly();
 		return z;
 	}
 
@@ -98,10 +94,12 @@ public class Finite {
 	Euclid extEuclid(Polynomial a, Polynomial b){// Algorithm 1.2.10 + 1.2.11
 		Euclid e = new Euclid(new Polynomial(null, a.mod), new Polynomial(new int[]{1}, a.mod), new Polynomial(new int[]{0}, a.mod));
 		// the algorithm requires x=1 and y=0.
+		
 		Polynomial big = biggerPoly(a,b);
 		Polynomial small = smallerPoly(a,b);
 		a = big;
 		b = small;
+		//the algorithm doesn't work consistently unless a>b
 		
 		
 
@@ -121,7 +119,7 @@ public class Finite {
 			r = division(a,b).remainder;
 			a = b;
 			b = r;
-		}
+		/*}
 		while(bc.leadingCoef()!=0){//finding x and y: 1.2.11*/
 			q = division(ac,bc).quotient;
 			c = bc;
@@ -142,7 +140,7 @@ public class Finite {
 		return e;
 	}
 	
-	Polynomial biggerPoly(Polynomial a, Polynomial b){
+	Polynomial biggerPoly(Polynomial a, Polynomial b){//returns the bigger polynomial
 
 		int max = Math.max(a.size(), b.size());
 		int adiff = max - a.size();
@@ -173,7 +171,7 @@ public class Finite {
 
 	}
 	
-	Polynomial smallerPoly(Polynomial a, Polynomial b){
+	Polynomial smallerPoly(Polynomial a, Polynomial b){//returns the smaller polynomial
 
 		int max = Math.max(a.size(), b.size());
 		int adiff = max - a.size();
@@ -204,12 +202,12 @@ public class Finite {
 
 	}
 
-	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){
+	boolean equalModP(Polynomial a, Polynomial b, Polynomial p){//checks whether two polynomials are equal modulo a third poylonmial
 		return(division(a,p).remainder == division(b,p).remainder);
 	}
 
 
-	Polynomial xpow(int pow,int mod){
+	Polynomial xpow(int pow,int mod){//return x^pow
 		Polynomial z = new Polynomial(null, mod);
 		z.add1Coefficient(1);
 		for(int i = 0; i < pow; i++){
@@ -218,10 +216,12 @@ public class Finite {
 		return z;
 	}
 
-	Polynomial xpowminusx(int pow,int mod){
+	Polynomial xpowminusx(int pow,int mod){//returns x^pow - x
 		return sub(xpow(pow,mod), new Polynomial(new int[]{1,0},mod));
 	}
-	int findDiv(int r,int b,int m){
+	
+	
+	int findDiv(int r,int b,int m){//finds the quotient of b that gives r during division modulo m
 		int i=0;
 		for( i=0 ; i<m ; i++){
 			if(( b * i) % m == r){
@@ -231,7 +231,7 @@ public class Finite {
 		return -1;
 	}
 
-	void addTable(Polynomial a){
+	void addTable(Polynomial a){//creates the addition table
 		Field f = new Field(a.mod, a.degree());
 		int maxLen = maxLength(f);
 		Polynomial pdisp = new Polynomial(null, a.mod);
@@ -260,7 +260,7 @@ public class Finite {
 
 	}
 
-	void mulTable(Polynomial a){
+	void mulTable(Polynomial a){//creates the multiplication table
 		Field f = new Field(a.mod, a.degree());
 		int maxLen = maxLength(f);
 		Polynomial pdisp = new Polynomial(null, a.mod);
@@ -288,8 +288,68 @@ public class Finite {
 		}
 
 	}
+	
+	
+	ArrayList<Polynomial> primitives(int degree, int mod){//returns all primitive elements in a field
+		ArrayList<Polynomial> primis = new ArrayList<Polynomial>();
+		Field f = new Field(mod, degree);
+	
+		for(int i = 0; i < f.elements.size(); i++ ){
+				if(primitive(f, f.elements.get(i))){
+					primis.add(f.elements.get(i));
+				}
+		}
+		return primis;
 
-	int maxLength(Field f){//returns the length of the longest possible element in a field
+	}
+	
+	boolean primitive(Field f, Polynomial a){
+		ArrayList<Integer> primdivs = primeDivisors(f.pdegree-1);
+		int i = 1;
+		Polynomial one = new Polynomial(new int[]{1}, a.mod);
+		while(!(polyPow(a, (f.pdegree-1)/primdivs.get(i))== one) && i <= f.zmod){
+			i++;
+		}
+		return(i <= f.zmod);
+	}
+	
+	
+	
+	Polynomial polyPow(Polynomial a,int pow){//returns a^pow
+		Polynomial z = new Polynomial(new int[]{1},a.mod);
+		
+		for(int i=0;i<pow;i++){
+			z = product(z, a);
+		}
+		return z;
+	}
+
+	
+	ArrayList<Integer> primeDivisors(int n){//creates an arraylist with the prime divisors of n
+		ArrayList<Integer> primdivs = new ArrayList<Integer>();
+		if(n%2==0){
+			primdivs.add(2);
+		}
+		n = repeatedDiv(n,2);
+		
+		for (int i = 3; i <= Math.sqrt(n); i+= 2) {
+            while (n%i == 0)
+            {
+                primdivs.add(i);
+                n = repeatedDiv(n,i);
+            }
+        }
+		return primdivs;
+	}
+	int repeatedDiv(int n, int d){
+		while(n%d==0){
+			n/=d;
+		}
+		return n;
+	}
+
+
+	int maxLength(Field f){//returns the length of the element with the most characters in a field. Used for spacing in the tables
 		if(f.pdegree==1){
 			return (f.zmod-1)/10 + 1;
 		}
@@ -303,7 +363,7 @@ public class Finite {
 		return thing + "|";
 	}
 
-	void fieldOps(Polynomial a, Polynomial b, Polynomial irr){
+	void fieldOps(Polynomial a, Polynomial b, Polynomial irr){//performs addition, multiplication and multiplication a with the inverse of b
 		Polynomial one = new Polynomial(new int[]{1}, a.mod);
 		division(sum(a,b), irr).remainder.displayPoly();
 		division(product(a,b), irr).remainder.displayPoly();
@@ -316,7 +376,7 @@ public class Finite {
 
 	}
 
-	ArrayList<Polynomial> irreducibles(int degree, int mod){
+	ArrayList<Polynomial> irreducibles(int degree, int mod){//returns all irreducible polynomials of the given degree
 		ArrayList<Polynomial> irrs = new ArrayList<Polynomial>();
 		Field f = new Field(mod, degree+1);
 	
@@ -333,13 +393,13 @@ public class Finite {
 
 
 	public static void main(String[] args) {
-		int mod = 5;
-		int x[] = {0,3,3};
-		int y[] = {3,4,3,4,5,5,6,7,8,8};
+		int mod = 3;
+		int x[] = {1,1};
+		int y[] = {0};
 		int ir[] = {1,1,1};
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		new Finite().extEuclid(xx,yy).gcd.displayPoly();
+		new Finite().mulTable(irrr);
 	}
 }
