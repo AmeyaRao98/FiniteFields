@@ -281,13 +281,15 @@ public class Finite {
 			}
 			
 			System.out.println("What operation would you like to perform?");
-			System.out.println("1: Addition");
-			System.out.println("2: Subtraction");
-			System.out.println("3: Scalar Multiplication");
-			System.out.println("4: Polynomial Multiplication");
-			System.out.println("5: Division");
-			System.out.println("6: Extended Euclidian Algorithn");
-			System.out.println("7: Check whether two polynomials are equal modulo a thrid polynomial");
+			System.out.println("1: Addition Table");
+			System.out.println("2: Multiplication Table");
+			System.out.println("3: Addition of two field elements (a, b)");
+			System.out.println("4: Product of two field elements (a, b)");
+			System.out.println("5: Quotient of a*(b^-1)");
+			System.out.println("6: Check the primitivity of a polynomial");
+			System.out.println("7: Find the primitive elements in a field");
+			System.out.println("8: Check the irreducibility of a polynomial");
+			System.out.println("9: Produce irreducible polynomials for some degree");
 			System.out.println("0: Quit");
 		}
 	}
