@@ -162,6 +162,7 @@ public class Finite {
 		Scanner sc = new Scanner(System.in);
 		
 		int mod = 0;
+		int deg = 0;
 		ArrayList<Integer> inp1 = new ArrayList<Integer>();
 		ArrayList<Integer> inp2 = new ArrayList<Integer>();
 		ArrayList<Integer> inp3 = new ArrayList<Integer>();
@@ -169,9 +170,13 @@ public class Finite {
 		System.out.println("What operation would you like to perform?");
 		System.out.println("1: Addition Table");
 		System.out.println("2: Multiplication Table");
-		System.out.println("3: Addition, product of two field elements (a, b) also quotient of a*(b^-1)");
-		System.out.println("4: Find the primitive elements in a field");
-		System.out.println("5: Produce irreducible polynomials for some degree");
+		System.out.println("3: Addition of two field elements (a, b)");
+		System.out.println("4: Product of two field elements (a, b)");
+		System.out.println("5: Quotient of a*(b^-1)");
+		System.out.println("6: Check the primitivity of a polynomial");
+		System.out.println("7: Find the primitive elements in a field");
+		System.out.println("8: Check the irreducibility of a polynomial");
+		System.out.println("9: Produce irreducible polynomials for some degree");
 		System.out.println("0: Quit");
 
 		while(sc.hasNext()) {
@@ -198,10 +203,10 @@ public class Finite {
 				inp1 = acceptPoly();
 				System.out.println("Enter the second polynomial: ");
 				inp2 = acceptPoly();
-				System.out.println("Enter the irreucible6 polynomial: ");
+				System.out.println("Enter the irreucible polynomial: ");
 				inp3 = acceptPoly();
 				System.out.println("The result is: ");
-				scalarmul((new Polynomial(listToArray(inp1), mod)), mod).displayPoly();
+				fieldSum((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)));
 				break;
 			case 4:
 				System.out.println("Enter the modulus: ");
@@ -210,8 +215,10 @@ public class Finite {
 				inp1 = acceptPoly();
 				System.out.println("Enter the second polynomial: ");
 				inp2 = acceptPoly();
+				System.out.println("Enter the irreucible polynomial: ");
+				inp3 = acceptPoly();
 				System.out.println("The result is: ");
-				product((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod))).displayPoly();
+				fieldMul((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)));
 				break;
 			case 5:
 				System.out.println("Enter the modulus: ");
@@ -220,38 +227,50 @@ public class Finite {
 				inp1 = acceptPoly();
 				System.out.println("Enter the second polynomial: ");
 				inp2 = acceptPoly();
-				Division div = division((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
-				System.out.println("The quotient is: ");
-				div.quotient.displayPoly();
-				System.out.println("The remainder is: ");
-				div.remainder.displayPoly();
+				System.out.println("Enter the irreucible polynomial: ");
+				inp3 = acceptPoly();
+				System.out.println("The result is: ");
+				fieldQuotient((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)));
 				break;
 			case 6:
+				System.out.println("Define the field:");
 				System.out.println("Enter the modulus: ");
 				mod = sc.nextInt();
-				System.out.println("Enter the first polynomial: ");
-				inp1 = acceptPoly();
-				System.out.println("Enter the second polynomial: ");
+				System.out.println("Enter the degree of the irreducible polynomial that defines the field: ");
+				deg = sc.nextInt();
+				System.out.println("Enter the polynomial whose primitivity needs to be tested: ");
 				inp2 = acceptPoly();
-				Euclid eu = extEuclid((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
-				System.out.println("The quotient is: ");
-				eu.x.displayPoly();
-				System.out.println("The remainder is: ");
-				eu.y.displayPoly();
+				System.out.println(primitive((new Field(mod, deg )), (new Polynomial(listToArray(inp1), mod))));
 				break;
 			case 7:
+				System.out.println("Define the field:");
 				System.out.println("Enter the modulus: ");
 				mod = sc.nextInt();
-				System.out.println("Enter the first polynomial: ");
+				System.out.println("Enter the degree of the irreducible polynomial that defines the field: ");
+				deg = sc.nextInt();
+				ArrayList<Polynomial> prim = primitives(deg, mod);
+				
+				for(int i = 0; i < prim.size(); i++) {
+					prim.get(i).displayPoly();
+				}
+				break;
+			case 8:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the polynomial: ");
 				inp1 = acceptPoly();
-				System.out.println("Enter the second polynomial: ");
-				inp2 = acceptPoly();
-				System.out.println("Enter the third polynomial: ");
-				inp3 = acceptPoly();
-				if(equalModP((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)))) {
-					System.out.println("The first two polynomials are equal modulo the third one");
-				} else {
-					System.out.println("The first two polynomials are not equal modulo the third one");
+				System.out.println((new Polynomial(listToArray(inp1), mod)));
+				break;
+			case 9:
+				System.out.println("Define the field:");
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the degree of the irreducible polynomial that defines the field: ");
+				deg = sc.nextInt();
+				ArrayList<Polynomial> irr = irreducibles(deg, mod);
+				
+				for(int i = 0; i < irr.size(); i++) {
+					irr.get(i).displayPoly();
 				}
 				break;
 			case 0:
@@ -270,6 +289,7 @@ public class Finite {
 			System.out.println("6: Extended Euclidian Algorithn");
 			System.out.println("7: Check whether two polynomials are equal modulo a thrid polynomial");
 			System.out.println("0: Quit");
+		}
 	}
 	
 	ArrayList<Integer> acceptPoly(){
@@ -556,7 +576,6 @@ public class Finite {
 			}
 		}
 		return primis;
-
 	}
 
 	boolean primitive(Field f, Polynomial a){//checks if an element is primitive
