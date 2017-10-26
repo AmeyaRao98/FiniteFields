@@ -26,8 +26,8 @@ public class Finite {
 			case 0:
 				return;
 			}
-			if(!(choice >-1 && choice<3)){
-				System.out.println("Invalid");
+			if(!(choice > -1 && choice < 3)){
+				System.out.println("Invalid choice");
 			}
 			System.out.println("Would you like to perform an operation on polynomials or fields?");
 			System.out.println("1: Polynomials");
@@ -41,8 +41,7 @@ public class Finite {
 		int mod = 0;
 		ArrayList<Integer> inp1 = new ArrayList<Integer>();
 		ArrayList<Integer> inp2 = new ArrayList<Integer>();
-		int scmul=0;
-		ArrayList<Integer> thirdpoly = new ArrayList<Integer>();
+		ArrayList<Integer> inp3 = new ArrayList<Integer>();
 		
 		System.out.println("What operation would you like to perform?");
 		System.out.println("1: Addition");
@@ -58,39 +57,240 @@ public class Finite {
 			int choice = sc.nextInt();
 			switch (choice){
 			case 1:
-				System.out.println("Enter the modulus");
+				System.out.println("Enter the modulus: ");
 				mod = sc.nextInt();
-				System.out.println("Enter the first polynomial");
+				System.out.println("Enter the first polynomial: ");
 				inp1 = acceptPoly();
-				System.out.println("Enter the second polynomial");
+				System.out.println("Enter the second polynomial: ");
 				inp2 = acceptPoly();
-				
+				System.out.println("The result is: ");
+				sum((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod))).displayPoly();
 				break;
 			case 2:
-				goToFields();
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("The result is: ");
+				sub((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod))).displayPoly();
+				break;
+			case 3:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the multiplicative factor: ");
+				int factor = sc.nextInt();
+				System.out.println("The result is: ");
+				scalarmul((new Polynomial(listToArray(inp1), mod)), factor).displayPoly();
+				break;
+			case 4:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("The result is: ");
+				product((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod))).displayPoly();
+				break;
+			case 5:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				Division div = division((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
+				System.out.println("The quotient is: ");
+				div.quotient.displayPoly();
+				System.out.println("The remainder is: ");
+				div.remainder.displayPoly();
+				break;
+			case 6:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				Euclid eu = extEuclid((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
+				System.out.println("The gcd is: ");
+				eu.gcd.displayPoly();
+				System.out.println("X is: ");
+				eu.x.displayPoly();
+				System.out.println("Y is: ");
+				eu.y.displayPoly();
+				break;
+			case 7:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("Enter the third polynomial: ");
+				inp3 = acceptPoly();
+				if(equalModP((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)))) {
+					System.out.println("The first two polynomials are equal modulo the third one");
+				} else {
+					System.out.println("The first two polynomials are not equal modulo the third one");
+				}
 				break;
 			case 0:
 				return;
 			}
-			if(!(choice >-1 && choice<3)){
-				System.out.println("Invalid");
+			if(!(choice > -1 && choice < 8)){
+				System.out.println("Invalid choice");
 			}
-			System.out.println("Would you like to perform an operation on polynomials or fields?");
-			System.out.println("1: Polynomials");
-			System.out.println("2: Fields");
+			
+			System.out.println("What operation would you like to perform?");
+			System.out.println("1: Addition");
+			System.out.println("2: Subtraction");
+			System.out.println("3: Scalar Multiplication");
+			System.out.println("4: Polynomial Multiplication");
+			System.out.println("5: Division");
+			System.out.println("6: Extended Euclidian Algorithn");
+			System.out.println("7: Check whether two polynomials are equal modulo a thrid polynomial");
 			System.out.println("0: Quit");
 		}
 	}
 	
+	void goToField() {
+		Scanner sc = new Scanner(System.in);
+		
+		int mod = 0;
+		ArrayList<Integer> inp1 = new ArrayList<Integer>();
+		ArrayList<Integer> inp2 = new ArrayList<Integer>();
+		
+		System.out.println("What operation would you like to perform?");
+		System.out.println("1: Addition Table");
+		System.out.println("2: Multiplication Table");
+		System.out.println("3: Addition of two field elements");
+		System.out.println("4: Product of two field elements");
+		System.out.println("5: Quotient of a*(b^-1) (being 'a' and 'b' two field elements)");
+		System.out.println("6: Find the primitive elements in a field");
+		System.out.println("7: Produce irreducible polynomials for some degree");
+		System.out.println("0: Quit");
+
+		while(sc.hasNext()) {
+			int choice = sc.nextInt();
+			switch (choice){
+			case 1:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter an irreducible polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("The table is: ");
+				addTable((new Polynomial(listToArray(inp1), mod)));
+				break;
+			case 2:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter an irreducible polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("The table is: ");
+				mulTable((new Polynomial(listToArray(inp1), mod)));
+				break;
+			case 3:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the multiplicative factor: ");
+				int factor = sc.nextInt();
+				System.out.println("The result is: ");
+				scalarmul((new Polynomial(listToArray(inp1), mod)), factor).displayPoly();
+				break;
+			case 4:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("The result is: ");
+				product((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod))).displayPoly();
+				break;
+			case 5:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				Division div = division((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
+				System.out.println("The quotient is: ");
+				div.quotient.displayPoly();
+				System.out.println("The remainder is: ");
+				div.remainder.displayPoly();
+				break;
+			case 6:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				Euclid eu = extEuclid((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)));
+				System.out.println("The quotient is: ");
+				eu.x.displayPoly();
+				System.out.println("The remainder is: ");
+				eu.y.displayPoly();
+				break;
+			case 7:
+				System.out.println("Enter the modulus: ");
+				mod = sc.nextInt();
+				System.out.println("Enter the first polynomial: ");
+				inp1 = acceptPoly();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("Enter the third polynomial: ");
+				inp3 = acceptPoly();
+				if(equalModP((new Polynomial(listToArray(inp1), mod)), (new Polynomial(listToArray(inp2), mod)), (new Polynomial(listToArray(inp3), mod)))) {
+					System.out.println("The first two polynomials are equal modulo the third one");
+				} else {
+					System.out.println("The first two polynomials are not equal modulo the third one");
+				}
+				break;
+			case 0:
+				return;
+			}
+			if(!(choice > -1 && choice < 8)){
+				System.out.println("Invalid choice");
+			}
+			
+			System.out.println("What operation would you like to perform?");
+			System.out.println("1: Addition");
+			System.out.println("2: Subtraction");
+			System.out.println("3: Scalar Multiplication");
+			System.out.println("4: Polynomial Multiplication");
+			System.out.println("5: Division");
+			System.out.println("6: Extended Euclidian Algorithn");
+			System.out.println("7: Check whether two polynomials are equal modulo a thrid polynomial");
+			System.out.println("0: Quit");
+	}
+	
 	ArrayList<Integer> acceptPoly(){
 		Scanner sc = new Scanner(System.in);
-		ArrayList<Integer> ting = new ArrayList<Integer>();
+		ArrayList<Integer> coefficients = new ArrayList<Integer>();
 		while(sc.hasNextInt()){
-			ting.add(sc.nextInt());
+			coefficients.add(sc.nextInt());
 		}
 		sc.next();
-		return ting;
+		return coefficients;		
+	}
+	
+	int[] listToArray(ArrayList<Integer> a) {
+		int[] aa = new int[a.size()];
 		
+		for(int i = 0; i < a.size(); i++)  {
+			aa[i] = a.get(i);
+		}
+		
+		return aa;
 	}
 
 	Polynomial sum(Polynomial a, Polynomial b){//returns a+b
