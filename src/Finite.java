@@ -164,15 +164,14 @@ public class Finite {
 		int mod = 0;
 		ArrayList<Integer> inp1 = new ArrayList<Integer>();
 		ArrayList<Integer> inp2 = new ArrayList<Integer>();
+		ArrayList<Integer> inp3 = new ArrayList<Integer>();
 		
 		System.out.println("What operation would you like to perform?");
 		System.out.println("1: Addition Table");
 		System.out.println("2: Multiplication Table");
-		System.out.println("3: Addition of two field elements");
-		System.out.println("4: Product of two field elements");
-		System.out.println("5: Quotient of a*(b^-1) (being 'a' and 'b' two field elements)");
-		System.out.println("6: Find the primitive elements in a field");
-		System.out.println("7: Produce irreducible polynomials for some degree");
+		System.out.println("3: Addition, product of two field elements (a, b) also quotient of a*(b^-1)");
+		System.out.println("4: Find the primitive elements in a field");
+		System.out.println("5: Produce irreducible polynomials for some degree");
 		System.out.println("0: Quit");
 
 		while(sc.hasNext()) {
@@ -197,10 +196,12 @@ public class Finite {
 			case 3:
 				System.out.println("Enter the modulus: ");
 				mod = sc.nextInt();
-				System.out.println("Enter the polynomial: ");
+				System.out.println("Enter the first polynomial: ");
 				inp1 = acceptPoly();
-				System.out.println("Enter the multiplicative factor: ");
-				int factor = sc.nextInt();
+				System.out.println("Enter the second polynomial: ");
+				inp2 = acceptPoly();
+				System.out.println("Enter the third polynomial: ");
+				inp3 = acceptPoly();
 				System.out.println("The result is: ");
 				scalarmul((new Polynomial(listToArray(inp1), mod)), factor).displayPoly();
 				break;
@@ -622,13 +623,22 @@ public class Finite {
 		}
 		return thing + "|";
 	}
-
-	void fieldOps(Polynomial a, Polynomial b, Polynomial irr){//performs addition, multiplication and multiplication a with the inverse of b
-		Polynomial one = new Polynomial(new int[]{1}, a.mod);
+	
+	void fieldSum(Polynomial a, Polynomial b, Polynomial irr) {
+		System.out.print("a+b = ");
 		division(sum(a,b), irr).remainder.displayPoly();
+	}
+	
+	void fieldMul(Polynomial a, Polynomial b, Polynomial irr) {
+		System.out.print("a*b = ");
 		division(product(a,b), irr).remainder.displayPoly();
+	}
+
+	void fieldQuotient(Polynomial a, Polynomial b, Polynomial irr){//performs addition, multiplication and multiplication a with the inverse of b
+		Polynomial one = new Polynomial(new int[]{1}, a.mod);
 		if(sub(extEuclid(b, irr).gcd, one).leadingCoef() == 0){
-			division(product(a,extEuclid(b,irr).x), irr).remainder.displayPoly();;
+			System.out.print("a*(b^-1) = ");
+			division(product(a,extEuclid(b,irr).x), irr).remainder.displayPoly();
 		} 
 		else {
 			System.out.println("b does not an inverse");
