@@ -182,7 +182,6 @@ public class Finite {
 				mod = sc.nextInt();
 				System.out.println("Enter an irreducible polynomial: ");
 				inp1 = acceptPoly();
-				System.out.println("The table is: ");
 				addTable((new Polynomial(listToArray(inp1), mod)));
 				break;
 			case 2:
@@ -190,7 +189,6 @@ public class Finite {
 				mod = sc.nextInt();
 				System.out.println("Enter an irreducible polynomial: ");
 				inp1 = acceptPoly();
-				System.out.println("The table is: ");
 				mulTable((new Polynomial(listToArray(inp1), mod)));
 				break;
 			case 3:
@@ -200,10 +198,10 @@ public class Finite {
 				inp1 = acceptPoly();
 				System.out.println("Enter the second polynomial: ");
 				inp2 = acceptPoly();
-				System.out.println("Enter the third polynomial: ");
+				System.out.println("Enter the irreucible6 polynomial: ");
 				inp3 = acceptPoly();
 				System.out.println("The result is: ");
-				scalarmul((new Polynomial(listToArray(inp1), mod)), factor).displayPoly();
+				scalarmul((new Polynomial(listToArray(inp1), mod)), mod).displayPoly();
 				break;
 			case 4:
 				System.out.println("Enter the modulus: ");
