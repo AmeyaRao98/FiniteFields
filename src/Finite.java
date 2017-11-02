@@ -689,6 +689,6 @@ public class Finite {
 		Polynomial xx = new Polynomial(x, mod);
 		Polynomial yy = new Polynomial(y, mod);
 		Polynomial irrr = new Polynomial(ir, mod);
-		new Finite().extEuclid(xx,yy).gcd.displayPoly();
+		new Finite().masterFunction();
 	}
 }
